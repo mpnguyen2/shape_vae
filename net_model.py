@@ -22,32 +22,35 @@ class VAE(nn.Module):
 
         # Initialize Encoder Conv Layer
         self.encoder = nn.Sequential(
-            nn.Conv2d(input_channels, 32, kernel_size=3, stride=2), # 15 * 15 * 32
+            nn.Conv2d(input_channels, 32, kernel_size=3, stride=2, padding=1), # 32 x 16 x 16
+            nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.Conv2d(32, 64, kernel_size=3, stride=2), # 7 * 7 * 64
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 8 x 8
+            nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.Conv2d(64, 128, kernel_size=3, stride=2), # 3 * 3 * 128
+            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1), # 128 x 4 x 4 
+            nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.Flatten() # 1152 
+            nn.Flatten() # 2048
         )       
         # Fully connected to predict mean and variance
-        self.mu_fc = nn.Linear (3 * 3 * 128, latent_dims)
-        self.logvar_fc = nn.Linear (3 * 3 * 128, latent_dims)
+        self.mu_fc = nn.Linear (2048, latent_dims)
+        self.logvar_fc = nn.Linear (2048, latent_dims)
         # Fully connected to send convert latent space back up to the encoder output
-        self.fc_decoder = nn.Linear (latent_dims, 3 * 3 * 128)
+        self.fc_decoder = nn.Linear (latent_dims, 2048)
 
-        # Initialize Decoder Conv Layers
+        #Initialize Decoder Conv Layers
         self.decoder = nn.Sequential(
-            nn.Unflatten(1, torch.Size([128, 3, 3])),
-            nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2),
+            nn.Unflatten(1, torch.Size([128, 4, 4])), # 128 x 4 x 4
+            nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1), # 64 x 8 x 8
+            nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2),
+            nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, output_padding=1), # 32 x 16 x 16
+            nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.ConvTranspose2d(32, input_channels, kernel_size=3, stride=2),
+            nn.ConvTranspose2d(32, input_channels, kernel_size=3, stride=2, padding=1, output_padding=1), # 1 x 32 x 32
             nn.Sigmoid(),
         )
-
-
         
         # Store set of x and z1 for traing 
         self.x_buf = []
@@ -68,16 +71,17 @@ class VAE(nn.Module):
         return mu + eps*std
         
     def decode(self, z1):
-        new_z = self.fc_decoder(z1)
-        print(new_z.shape)
-        x  = self.decoder(new_z)
+        temp = self.fc_decoder(z1)
+        x  = self.decoder(temp)
         return x
     
     # forward may not be needed ????
     def forward(self, x):
         mu, logvar = self.encode(x)
         z1 = self.reparameterize(mu, logvar)
-        return self.decode(z1), mu, logvar
+        recon_x = self.decode(z1)
+        
+        return 0, mu, logvar
         
 
 class LatentRL(nn.Module):
@@ -88,14 +92,59 @@ class LatentRL(nn.Module):
         self.rewards = []
         self.net_rewards = []   # Reward returned by the artificial net
 
-    def actor(self):
-        return
+        # Initializes shared part of the network that processes the z-matrix of subgrids
+        # Input: 8 x 16 x 16, Output: 32 x 4 x 4 
+        self.subgrids_net = nn.Sequential(                               
+           nn.Conv2d(8, 16, kernel_size=3, stride=2, padding=1), # 16 x 8 x 8
+           nn.BatchNorm2d(16),
+           nn.ReLU(),
+           nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1), # 32 x 4 x 4
+           nn.BatchNorm2d(32),
+           nn.ReLU(),
+        )
 
-    def critic(self):
+        # Actor network components
+
+        self.actor_shared = nn.Sequential(
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
+            nn.BatchNorm2d(64),
+            nn.ReLU(),              
+            nn.Flatten(), # 256
+            nn.Linear(256, 128) # 128
+            nn.ReLU()
+        )
+
+        # Predicts the p-matrix containin quadrant position
+        self.p_net = nn.Sequential(
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.Linear(32, 16), 
+            nn.Softmax(),
+        )
+
+        # Predcits the action vector v
+        self.v_net = nn.Sequential(
+            nn.Linear
+        )
+        
+        # Critic network which predicts value
+        # Input: 8 x 16 x 16, Output: 1 
+        self.critic = nn.Sequential (
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
+            nn.Flatten(), # 256
+            nn.Linear(256, 128),
+            nn.Linear(128, 64),
+            nn.Linear(64, 32),
+            nn.Linear(32, 1)
+        )
+
+    def actor(self, z_proc):
         return
     
-    def reward_net(self):
+    def critic(self, z_proc):
         return
+
     def forward(self, z):
         # To be filled
         """
@@ -111,12 +160,25 @@ class LatentRL(nn.Module):
         3. reward function:
         All these nets share parts of the net starting from z
         so we group them here inside LatentRL
-        """
-        return action, value, net_reward
+        """            
+
+        # Shared network that processes z
+        z_processed = self.subgrids_net(z)
+        
+        # Get the action 
+        #p, v = self.action(z)
+        # Predict the value
+        #value = self.critic(z)
+        # Predict the reward
+        #reward_pred = self.reward(z, p, v)
+        return z_processed
+        #return action, value, net_reward
 
 
 
 if __name__ == "__main__":
     print("Testing model")
     vae = VAE()
+    agent = LatentRL()
     summary(vae, (1, 32, 32))
+    #summary(agent, (8, 16, 16))
