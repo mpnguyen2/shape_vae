@@ -3,17 +3,15 @@ This file consists of description of all network as well as forward definition
 """
 
 import torch
-from torch import nn, optim
-from torch.nn import functional as F
-from torchsummary import summary
-from torch.utils.tensorboard import SummaryWriter
+from torch import nn
+#from torchsummary import summary
+#from torch.utils.tensorboard import SummaryWriter
 
-print(torch.__version__)
+#print(torch.__version__)
 
 class VAE(nn.Module):
     def __init__(self, latent_dims=8, input_channels=1):
         super(VAE, self).__init__()
-        # To be filled: Just a standard VAE: Convolutional net and upsampling
         # x dim: (32, 32) (is a subgrid of big image X: (512, 512))
         # z1 dim: 8 is the latent state in this subgrid VAE.
         # z1 is just part of z. x maps to z1, while X maps to z (of dim 16*16*8)
@@ -54,6 +52,7 @@ class VAE(nn.Module):
         
         # Store set of x and z1 for traing 
         self.x_buf = []
+        self.x_recon_buf = []
         self.mu_buf = []
         self.logvar_buf = []
         
@@ -64,8 +63,7 @@ class VAE(nn.Module):
         return mu, logvar
         
     def reparameterize(self, mu, logvar):
-        # For now, just do Gaussian output. 
-        # One can later consider normalizing flow like IAF
+        # For now, just do Gaussian output. Consider normalizing flow such as IAF later
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
         return mu + eps*std
@@ -75,22 +73,19 @@ class VAE(nn.Module):
         x  = self.decoder(temp)
         return x
     
-    # forward may not be needed ????
     def forward(self, x):
         mu, logvar = self.encode(x)
         z1 = self.reparameterize(mu, logvar)
-        recon_x = self.decode(z1)
-        
-        return 0, mu, logvar
+        return self.decode(z1)
         
 
 class LatentRL(nn.Module):
     def __init__(self):
         super(LatentRL, self).__init__()
-        # To be filled
         self.saved_actions = []
         self.rewards = []
-        self.net_rewards = []   # Reward returned by the artificial net
+        # Reward returned by the artificial net
+        self.net_rewards = []  
 
         # Initializes shared part of the network that processes the z-matrix of subgrids
         # Input: 8 x 16 x 16, Output: 32 x 4 x 4 
@@ -216,8 +211,9 @@ class LatentRL(nn.Module):
         # Predict the value
         value = self.critic(z_processed)
         # Predict the reward
-        print(action.shape)
+        #print(action.shape)
         net_reward = self.reward(z_processed, action)
+        '''
         # DEBUGGING
         print("z_processed:", z_processed.shape)
         print("p:", p.shape)
@@ -225,13 +221,15 @@ class LatentRL(nn.Module):
         print("Action:", action.shape)
         print("Value:", value.shape)
         print("Reward:", net_reward.shape)
+        '''
         return action, value, net_reward
 
 
-
+'''
 if __name__ == "__main__":
     print("Testing model")
     vae = VAE()
     agent = LatentRL()
     #summary(vae, (1, 32, 32))
     summary(agent, (8, 16, 16))
+'''
