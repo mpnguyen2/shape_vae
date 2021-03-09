@@ -104,47 +104,90 @@ class LatentRL(nn.Module):
         )
 
         # Actor network components
-
+        # Shared part of the actor network
+        # 
         self.actor_shared = nn.Sequential(
             nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
             nn.BatchNorm2d(64),
             nn.ReLU(),              
             nn.Flatten(), # 256
-            nn.Linear(256, 128) # 128
+            nn.Linear(256, 128), # 128
             nn.ReLU()
         )
 
-        # Predicts the p-matrix containin quadrant position
+        # Predicts a categorical distribution over the p-matrix containing quadrant positions
+        # Input: 128, Output: 16
         self.p_net = nn.Sequential(
             nn.Linear(128, 64),
             nn.ReLU(),
             nn.Linear(64, 32),
+            nn.ReLU(),
             nn.Linear(32, 16), 
             nn.Softmax(),
         )
 
-        # Predcits the action vector v
+        # Predicts the action vector 
+        # Input: 128 Output: 8
         self.v_net = nn.Sequential(
-            nn.Linear
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 16),
+            nn.ReLU(), 
+            nn.Linear(16, 8),
+            nn.Softmax()
         )
         
         # Critic network which predicts value
         # Input: 8 x 16 x 16, Output: 1 
         self.critic = nn.Sequential (
             nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
+            nn.BatchNorm2d(64),
+            nn.ReLU(),  
             nn.Flatten(), # 256
             nn.Linear(256, 128),
+            nn.ReLU(),
             nn.Linear(128, 64),
+            nn.ReLU(),
             nn.Linear(64, 32),
+            nn.ReLU(),
             nn.Linear(32, 1)
         )
 
-    def actor(self, z_proc):
-        return
-    
-    def critic(self, z_proc):
-        return
+        # Reward network
+        # Process the processed z matrix for the reward network
+        self.reward_z_net = nn.Sequential (
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Flatten(), # 256
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+        )
+        
+        self.reward_action_net = nn.Sequential (
+            nn.Linear(24, 24),
+            nn.ReLU()
+        )
+        # Predicts reward
+        # Input: 32 + 24, Output: 1
+        self.reward_net_main = nn.Sequential(
+            nn.Linear(56, 32),
+            nn.ReLU(),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+            nn.Linear(16, 1)
+        )
 
+    def reward(self, z_processed, action):
+        temp = self.reward_z_net(z_processed)
+        temp_act = self.reward_action_net(action)
+        return self.reward_net_main(torch.cat((temp, temp_act), 1))
+        
     def forward(self, z):
         # To be filled
         """
@@ -162,17 +205,27 @@ class LatentRL(nn.Module):
         so we group them here inside LatentRL
         """            
 
-        # Shared network that processes z
+        # Shared network that processes z before sending it to other networks
         z_processed = self.subgrids_net(z)
-        
-        # Get the action 
-        #p, v = self.action(z)
+
+        # Get the action (i.e. p and v)
+        temp = self.actor_shared(z_processed) 
+        p = self.p_net(temp)
+        v = self.v_net(temp)
+        action = torch.cat((p, v), 1)
         # Predict the value
-        #value = self.critic(z)
+        value = self.critic(z_processed)
         # Predict the reward
-        #reward_pred = self.reward(z, p, v)
-        return z_processed
-        #return action, value, net_reward
+        print(action.shape)
+        net_reward = self.reward(z_processed, action)
+        # DEBUGGING
+        print("z_processed:", z_processed.shape)
+        print("p:", p.shape)
+        print("v:", v.shape)
+        print("Action:", action.shape)
+        print("Value:", value.shape)
+        print("Reward:", net_reward.shape)
+        return action, value, net_reward
 
 
 
@@ -180,5 +233,5 @@ if __name__ == "__main__":
     print("Testing model")
     vae = VAE()
     agent = LatentRL()
-    summary(vae, (1, 32, 32))
-    #summary(agent, (8, 16, 16))
+    #summary(vae, (1, 32, 32))
+    summary(agent, (8, 16, 16))
