@@ -29,7 +29,7 @@ torchvision.datasets.MNIST('./mnist_data', train=False, download=True,
                                torchvision.transforms.ToTensor(),
                                torchvision.transforms.Normalize(
                                  (0.1307,), (0.3081,))
-                             ])), batch_size=1, shuffle=True)
+                             ])), batch_size=1000, shuffle=True)
 
 
 # Displays the first MNIST digit
