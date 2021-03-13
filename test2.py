@@ -11,7 +11,10 @@ Do some testing here
 '''
 
 #### TESTING TRAIN ####
-
-train(num_iter_pretrain_vae = 2, \
-      num_eps_with_VAE=5, num_eps_without_VAE=2, initialize_interval=10, \
+'''
+train(num_iter_pretrain_vae = 0, \
+      num_eps_with_VAE=500, num_eps_without_VAE=200, initialize_interval=10, \
           T = 180, discounted_rate = 0.05, log_interval=20, learning_rate = 3e-2)
+'''
+a = torch.tensor([0.1, 0.7, 0.3])
+print(a > 0.5)

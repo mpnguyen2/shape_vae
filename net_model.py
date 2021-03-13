@@ -4,6 +4,7 @@ This file consists of description of all network as well as forward definition
 
 import torch
 from torch import nn
+from torch.nn import functional as F
 #from torchsummary import summary
 #from torch.utils.tensorboard import SummaryWriter
 
@@ -25,18 +26,18 @@ class VAE(nn.Module):
             nn.ReLU(),
             nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 8 x 8
             nn.BatchNorm2d(64),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1), # 128 x 4 x 4 
             nn.BatchNorm2d(128),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Flatten() # 2048
         )       
         # Fully connected to predict mean and variance
-        self.mu_fc = nn.Linear (2048, latent_dims)
-        self.logvar_fc = nn.Linear (2048, latent_dims)
+        self.mu_fc = nn.Linear(2048, latent_dims)
+        self.logvar_fc = nn.Linear(2048, latent_dims)
         # Fully connected to send convert latent space back up to the encoder output
-        self.fc_decoder = nn.Linear (latent_dims, 2048)
-
+        self.fc_decoder = nn.Linear(latent_dims, 2048)
+        
         #Initialize Decoder Conv Layers
         self.decoder = nn.Sequential(
             nn.Unflatten(1, torch.Size([128, 4, 4])), # 128 x 4 x 4
@@ -117,8 +118,10 @@ class LatentRL(nn.Module):
             nn.ReLU(),
             nn.Linear(64, 32),
             nn.ReLU(),
-            nn.Linear(32, 16), 
-            nn.Softmax(),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+            nn.Linear(16, 16),
+            nn.ReLU()
         )
 
         # Predicts the action vector 
@@ -131,7 +134,10 @@ class LatentRL(nn.Module):
             nn.Linear(32, 16),
             nn.ReLU(), 
             nn.Linear(16, 8),
-            nn.Softmax()
+            nn.ReLU(),
+            nn.Linear(8, 8),
+            nn.ReLU(),
+            nn.Softmax(dim=1)
         )
         
         # Critic network which predicts value
@@ -147,7 +153,14 @@ class LatentRL(nn.Module):
             nn.ReLU(),
             nn.Linear(64, 32),
             nn.ReLU(),
-            nn.Linear(32, 1)
+            nn.Linear(32, 8),
+            nn.ReLU(),
+            nn.Linear(8, 4),
+            nn.ReLU(),
+            nn.Linear(4, 2),
+            nn.ReLU(),
+            nn.Linear(2, 1),
+            nn.ReLU()
         )
 
         # Reward network
@@ -175,12 +188,16 @@ class LatentRL(nn.Module):
             nn.ReLU(),
             nn.Linear(32, 16),
             nn.ReLU(),
-            nn.Linear(16, 1)
+            nn.Linear(16, 4),
+            nn.Sigmoid(),
+            nn.Linear(4, 1),
+            nn.Sigmoid()
         )
 
     def reward(self, z_processed, action):
         temp = self.reward_z_net(z_processed)
         temp_act = self.reward_action_net(action)
+        #print(temp, temp_act)
         return self.reward_net_main(torch.cat((temp, temp_act), 1))
         
     def forward(self, z):
@@ -205,7 +222,10 @@ class LatentRL(nn.Module):
 
         # Get the action (i.e. p and v)
         temp = self.actor_shared(z_processed) 
-        p = self.p_net(temp)
+        tmp_p = self.p_net(temp)
+        p = F.softmax(tmp_p[:,:4], dim=1)
+        for i in range(1, 4):
+            p = torch.cat((p, F.softmax(tmp_p[:, 4*i:4*i+4], dim=1)),1)
         v = self.v_net(temp)
         action = torch.cat((p, v), 1)
         # Predict the value
@@ -231,5 +251,5 @@ if __name__ == "__main__":
     vae = VAE()
     agent = LatentRL()
     #summary(vae, (1, 32, 32))
-    summary(agent, (8, 16, 16))
+    #summary(agent, (8, 16, 16))
 '''
