@@ -12,24 +12,22 @@ from net_model import VAE
 # All images are converted to tensors and normalized by the mean and standard deviation of MNIST
 
 # Loads in the training set for MNIST
-train_loader = torch.utils.data.DataLoader(
-  torchvision.datasets.MNIST('./mnist_data', train=True, download=True,
+train_dataset = torchvision.datasets.MNIST('./mnist_data', train=True, download=True,
                              transform=torchvision.transforms.Compose([
                                torchvision.transforms.Resize((32, 32)),
                                torchvision.transforms.ToTensor(),
                                torchvision.transforms.Normalize(
-                                 (0.1307,), (0.3081,))
-                             ])), batch_size=64, shuffle=True)
+                                 (0.1307,), (0.3081,)) ]))
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
 
 # Loads in the test set for mnist
-test_loader = torch.utils.data.DataLoader(
-torchvision.datasets.MNIST('./mnist_data', train=False, download=True,
+test_dataset = torchvision.datasets.MNIST('./mnist_data', train=False, download=True,
                              transform=torchvision.transforms.Compose([
                                torchvision.transforms.Resize((32, 32)),
                                torchvision.transforms.ToTensor(),
                                torchvision.transforms.Normalize(
-                                 (0.1307,), (0.3081,))
-                             ])), batch_size=1000, shuffle=True)
+                                 (0.1307,), (0.3081,)) ]))
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1000, shuffle=True)
 
 
 # Displays the first MNIST digit
@@ -82,12 +80,29 @@ def test_mnist(vae, test_loader):
             test_loss += loss.item()
     print('Test Loss: {}'.format(test_loss))
 
+def visualize_recon(vae, num_samples):
+    vae.eval()
+    sample_indices = np.random.choice(range(1, 10000), num_samples, replace=False)
+    fig = plt.figure()
+    for i in sample_indices:
+        ax1 = plt.add_subplot(1, 1, 2)
 
-vae = VAE()
-for epoch in range(1, 51):
-    print("Epoch:", epoch)
-    train_mnist_epoch(vae, train_loader)
-    test_mnist(vae, test_loader)
+    return 
+
+print(test_dataset)
+#vae = VAE()
+#for epoch in range(1, 51):
+#    print("Epoch:", epoch)
+#    train_mnist_epoch(vae, train_loader)
+#    test_mnist(vae, test_loader)
+#    if epoch % 10:
+#        torch.save(vae.state_dict(), "./output/model")
+#    torch.save(vae.state_dict(), "./output/model")
+
+#with torch.no_grad():
+#    z = torch.randn(64, 2)
+#    sample = vae.decode(z)
+#    torchvision.utils.save_image(sample.view(64, 1, 32, 32), "./output/image_" + ".png")
 
 
                         
