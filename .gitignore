@@ -9,6 +9,8 @@ __pycache__/
 # Data
 mnist_data/
 output/
+pretrain/
+agent_with_vae/
 
 # C extensions
 *.so

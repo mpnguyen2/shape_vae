@@ -12,6 +12,7 @@ from net_model import VAE, LatentRL
 from collections import namedtuple
 from utils import initialize, step, updateX, updateZ, decode_pic, get_batch_sample
 import time
+import matplotlib.pyplot as plt
 
 # Variables get updated every timestep: X, area, peri
 # X is refreshed every initialize_interval episodes
@@ -20,30 +21,32 @@ import time
 SavedAction = namedtuple('SavedAction', ['log_prob', 'value'])
 
 # Fixed hyperparams:
+beta = 0.0001        
 eps = 0.01 # Helper when normalize cumulative rewards
 lambda1 = 0.1 # artificial reward vs actor-critic loss
 lambda2 = 0.2 # helper hyperparam so that binary cross entropy can be calculated on 0-1 grid
 # GPU to use
-device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
-
+#device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
+device = torch.device("cpu")
 def loss_function(x_recon, x, mu, logvar):
     ''' 
     Reconstruction + KL divergence losses summed over all elements and batch.
     See Kingma et al.
     '''
     BCE = F.binary_cross_entropy(lambda2*x_recon+0.5*(1-lambda2),\
-                                 lambda2*x+0.5*(1-lambda2), reduction='sum')
-    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+                                 lambda2*x+0.5*(1-lambda2), reduction='mean')
+    KLD = beta * torch.mean(-0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1), dim=0)
     
     return BCE+KLD
 
 def pretrain_vae(vae_model, vae_opt, num_iter, sample_size=1024):
-    num_epoch = 100000; #total_loss = 0
+    num_epoch = 1000; #total_loss = 0
     for i_iter in range(num_iter):
         # Sample a mini-batch and then train by shuffle this minibatch
-        X = get_batch_sample(sample_size) 
+        X = get_batch_sample(sample_size) # 1024 x 1 x 32 x 32
         # compute total_loss for log purpose
         #total_loss = 0
+                
         for i_epoch in range(num_epoch):
             vae_opt.zero_grad()
             # Shuffle mini-batch
@@ -51,11 +54,8 @@ def pretrain_vae(vae_model, vae_opt, num_iter, sample_size=1024):
             x = x.to(device)
             # Forward and calculate loss
             mu, logvar = vae_model.encode(x)
-            #print(mu[0, :5])
-            #print(logvar[0, :5])
             x_recon = vae_model.decode(vae_model.reparameterize(mu, logvar))
             
-            #print(x_recon[0,0,20:25, 20:25].cpu().detach().numpy())
             loss = loss_function(x_recon, x, mu, logvar)
             if i_epoch % 400 == 0:
                 print('VAE loss in {}th epoch of the {}th iteration is {}'\
@@ -65,8 +65,11 @@ def pretrain_vae(vae_model, vae_opt, num_iter, sample_size=1024):
             vae_opt.step()
             # Update total_loss
             #total_loss += loss
-        #print('\nIteration {}: VAE average loss: {}\n'.format(i_iter+1, total_loss/num_epoch))
+        x = X[torch.randperm(sample_size)[:32],:,:,:]
+        visualize_grid(vae_model, x, output="./pretrain/image")
+    print("Finished Pre Train")
 
+        
 def sample(vae_model, ac_model, p, z, X, area, peri):
     ''' 
     Given previous (x, z, action) data
@@ -288,7 +291,7 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
     
     # Declare data for main training
     # Large image X get a small part updated each time step and refresh every 10 episodes
-    X = np.zeros((512, 512));
+    X = np.zeros((512, 512))
     rewards = [] # rewards log
     
     ## TRAIN WITH VAE ##
@@ -297,10 +300,13 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
         if i_episode % initialize_interval == 0:
             # Initialize X and z every 10 episodes
             area, peri, X = initialize()
+            print(X)
+            visualize_grid(None, [torch.tensor(X)], output="./agent_with_vae/initial")
             init_reward = np.sqrt(area)/peri
             # Set each (8, :, :,) of z to be the encoding of a cell in the subgrid of X
             z = decode_pic(X, vae_model, device)
             p = np.zeros(4).astype(int)
+            # Pick the top left corner as the first subgrid to put in the x buffer
             tmp = torch.tensor(X[0:32, 0:32], dtype=torch.float).unsqueeze(0).to(device)
             if len(vae_model.x_buf) == 0:
                 vae_model.x_buf.append(tmp)
@@ -336,3 +342,31 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
     print('\nTraining completed. Time taken in total: {} seconds\n'.format(time.time()-start_time))
     
     return rewards
+
+def visualize_grid(vae, images, output="./iamges/image"):
+       
+        fig = plt.figure()
+        # Just plot the images if vae is passed as None
+        if vae == None:
+            for index ,image in enumerate(images):
+                ax1 = fig.add_subplot(111)
+                ax1.imshow(torch.reshape(image, (512, 512)), cmap='gray')
+                plt.savefig(output + '_' + str(index))
+                plt.close()
+                fig = plt.figure()
+        else:
+            vae.eval()
+            # Else plot the images and their vae constructions
+            with torch.no_grad():
+                out_num = 0
+                for image in images:
+                    ax1 = fig.add_subplot(1, 2, 1)
+                    ax2 =  fig.add_subplot(1, 2, 2)
+                    image = torch.reshape(image, (1, 1, 32, 32))
+                    recon, _, _ = vae(image)
+                    ax1.imshow(torch.reshape(image, (32, 32)), cmap='gray')
+                    ax2.imshow(torch.reshape(recon, (32, 32)), cmap='gray')
+                    plt.savefig(output + '_' + str(out_num))
+                    out_num += 1
+                    plt.clf()
+            vae.train()
