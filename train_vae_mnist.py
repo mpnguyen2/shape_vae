@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import torch.optim as optim
 import torch.nn.functional as F
 from net_model import VAE
+from vae_metrics import Metric
 
 # Set up logger
 logger = logging.getLogger("Model logger")
@@ -53,7 +54,7 @@ def loss_func (recon_x, x, mu, log_var):
 
 # Test MNIST dataset
 # Calculates the test loss and the pixelwise MSE on the test set
-def test_mnist(vae, test_loader):
+def test_mnist(vae, test_loader, metric=None):
     vae.eval()
     test_loss = 0
     mse_loss = 0
@@ -122,22 +123,36 @@ test_dataset = torchvision.datasets.MNIST('./mnist_data', train=False, download=
                                  (0.1307,), (0.3081,)) ]))
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1000, shuffle=True)
 
-
-vae = VAE()
-# Train VAE
-for epoch in range(1, 51):
-    logger.debug("Epoch: {}".format(epoch))
-    train_mnist_epoch(vae, train_loader)
-    test_mnist(vae, test_loader)
-    visualize_recon(test_dataset, vae, 10, output="./output/epoch_" + str(epoch))
-    if epoch % 10:
+# Trains the model
+def train_model(num_epochs):
+    vae = VAE()
+    # Train and test VAE
+    for epoch in range(1, num_epochs + 1):
+        logger.debug("Epoch: {}".format(epoch))
+        train_mnist_epoch(vae, train_loader)
+        test_mnist(vae, test_loader)
+        visualize_recon(test_dataset, vae, 10, output="./output/epoch_" + str(epoch))
+        if epoch % 10:
+            torch.save(vae.state_dict(), "./output/model")
         torch.save(vae.state_dict(), "./output/model")
-    torch.save(vae.state_dict(), "./output/model")
-# Reconstruct a bunch of images
-with torch.no_grad():
-    z = torch.randn(64, 8)
-    sample = vae.decode(z)
-    torchvision.utils.save_image(sample.view(64, 1, 32, 32), "./output/recon_" + ".png")
+    # Reconstruct a bunch of images
+    with torch.no_grad():
+        z = torch.randn(64, 8)
+        sample = vae.decode(z)
+        torchvision.utils.save_image(sample.view(64, 1, 32, 32), "./output/recon_" + ".png")
+
+# Load in an existing model from a state_dict
+def load_model_and_test(path_to_model):
+    model = VAE()
+    model.load_state_dict(torch.load(path_to_model))   
+    model.eval() 
+    test_mnist(model, test_loader)
+    metric = Metric(model, test_loader, test_dataset)
+    print(metric.knn_mse(3))
+
+#train_model(15)
+load_model_and_test("./output/model")
+    
 
 
                         
