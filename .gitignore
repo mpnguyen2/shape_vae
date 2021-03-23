@@ -3,7 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Vscode 
 .vscode/
+
+# Data
+mnist_data/
+output/
+pretrain/
+agent_with_vae/
 
 # C extensions
 *.so

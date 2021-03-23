@@ -77,7 +77,7 @@ class VAE(nn.Module):
     def forward(self, x):
         mu, logvar = self.encode(x)
         z1 = self.reparameterize(mu, logvar)
-        return self.decode(z1)
+        return self.decode(z1), mu, logvar
         
 
 class LatentRL(nn.Module):
