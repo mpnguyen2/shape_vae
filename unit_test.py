@@ -1,8 +1,16 @@
+import numpy as np
+import torch
 from utils import get_sample
+from torch.distributions import Categorical, multivariate_normal
+from net_model_2 import LatentRL
 
-for _ in range(20):
-    x = get_sample()
-    print(x.sum())
+                                  
+ac_model = LatentRL()
+
+for name, param in ac_model.named_parameters():
+    if param.requires_grad:
+        print(name)
+
 
 '''
 ### TEST CUDA ### -> Using CUDA for VAE is better, not sure about ac net.

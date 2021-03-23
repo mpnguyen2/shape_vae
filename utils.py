@@ -66,7 +66,7 @@ def get_sample():
         # only top
         if orient < 0.4:
             for i in range(32):
-                x[i,:len_one[i]] = 0.6+0.4*np.random.rand(len_one[i])
+                x[i,:len_one[i]] = 0.7+0.3*np.random.rand(len_one[i])
         # only bottom
         elif orient < 0.6:
             for i in range(32):
@@ -74,11 +74,11 @@ def get_sample():
         # only left
         elif orient < 0.8:
             for i in range(32):
-                x[:len_one[i], i] = 0.8+0.2*np.random.rand(len_one[i])
+                x[:len_one[i], i] = 0.7+0.3*np.random.rand(len_one[i])
         # only right
         else:
             for i in range(32):
-                x[32-len_one[i]:32, i] = 0.9+0.1*np.random.rand(len_one[i])
+                x[32-len_one[i]:32, i] = 0.7+0.3*np.random.rand(len_one[i])
            
     x = x.reshape(1, 32, 32)
     return torch.tensor(x, dtype=torch.float)
@@ -122,10 +122,15 @@ def step(z, p, v, device):
     v: how much to update
     Return tensor z1
     """
-    eps = 0.01
+    eps = 0.001
+    v_dat = v.detach().numpy()
+    if np.max(np.abs(v_dat)) != 0:
+        v_dat = v_dat/np.max(np.abs(v_dat))
+        
     cx, cy = subgrid_ind(p)
-    return torch.tensor(z[:, cx, cy].numpy() \
-                    + eps*v.detach().numpy()).to(device)
+    z1_dat = z[:, cx, cy].numpy() + eps*v_dat
+    z1_dat = z1_dat/np.max(np.abs(z1_dat))  
+    return torch.tensor(z1_dat).to(device)
 
 
 def updateX(X, old_area, old_peri, p, x):

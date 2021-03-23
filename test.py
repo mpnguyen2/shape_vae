@@ -1,17 +1,13 @@
 """
 Testing files.
 """
-import torch
-from torch import nn
 from train import train
-from net_model import LatentRL, VAE
-import time, logging
 '''
 Do some testing here
 '''
 
 #### TESTING TRAIN ####
 
-train(num_iter_pretrain_vae = 2, \
-      num_eps_with_VAE=5, num_eps_without_VAE=2, initialize_interval=10, \
-          T = 180, discounted_rate = 0.05, log_interval=20, learning_rate = 3e-2)
+train(vae_training_size=1024, vae_num_epoch=1001, num_eps_with_VAE=400, \
+      num_eps_without_VAE=0, num_traj=1, initialize_interval=20,\
+          T = 100, discounted_rate = 0.99, log_interval=10)
