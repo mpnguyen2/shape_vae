@@ -185,7 +185,7 @@ def trainAC_per_eps(ac_opt, ac_model, gamma, T, episode, b):
     # sum up all loss
     p_loss = torch.stack(p_policy_losses).sum()
     v_loss = torch.stack(v_policy_losses).sum()
-    loss = p_loss
+    loss = p_loss + v_loss
 
     #value_losses = torch.stack(value_losses).mean()
     # Discourage similar values to escape local min
@@ -259,7 +259,7 @@ def train(vae_training_size, vae_num_epoch, num_eps_with_VAE,\
     [
         {"params": ac_model.v_net.parameters(), "lr": 1e-3}
     ],
-    lr=3e-2)
+    lr=1e-1)
     # Training
     print('Begin training...\n')
     start_time = time.time()

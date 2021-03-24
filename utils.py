@@ -122,14 +122,14 @@ def step(z, p, v, device):
     v: how much to update
     Return tensor z1
     """
-    eps = 0.001
+    eps = 0.6
     v_dat = v.detach().numpy()
     if np.max(np.abs(v_dat)) != 0:
         v_dat = v_dat/np.max(np.abs(v_dat))
         
     cx, cy = subgrid_ind(p)
-    z1_dat = z[:, cx, cy].numpy() + eps*v_dat
-    z1_dat = z1_dat/np.max(np.abs(z1_dat))  
+    z1_dat = z[:, cx, cy].detach().numpy() + eps*v_dat
+    z1_dat = np.minimum(z1_dat, 0.99)
     return torch.tensor(z1_dat).to(device)
 
 
@@ -179,9 +179,6 @@ def updateX(X, old_area, old_peri, p, x):
             
     # Finally update X
     X[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x_new
-    if peri < 0:
-        print('Something wrong!!!')
-        print(peri)
 
     return area, peri
 
@@ -195,3 +192,10 @@ def updateZ(z, p, z1):
     cx, cy = subgrid_ind(p)
     z[:, cx, cy] = z1.cpu().detach().numpy()
     return torch.tensor(z)
+
+def updateX_no_reward(X, p, x):
+    n = 32
+    cx, cy = subgrid_ind(p)
+    x_new = x.cpu().squeeze().clone().detach().numpy()
+    x_new = np.array(x_new > 0.5, dtype=float)
+    X[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x_new

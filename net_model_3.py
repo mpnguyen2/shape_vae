@@ -26,17 +26,14 @@ class VAE(nn.Module):
             nn.ReLU(),
             nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 8 x 8
             nn.BatchNorm2d(64),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1), # 128 x 4 x 4 
             nn.BatchNorm2d(128),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Flatten() # 2048
         )       
         # Fully connected to predict mean and variance
-        self.mu_fc = nn.Sequential(
-            nn.Linear(2048, latent_dims),
-            nn.Tanh()
-        )
+        self.mu_fc = nn.Linear(2048, latent_dims)
         self.logvar_fc = nn.Linear(2048, latent_dims)
         # Fully connected to send convert latent space back up to the encoder output
         self.fc_decoder = nn.Linear(latent_dims, 2048)
@@ -61,7 +58,6 @@ class VAE(nn.Module):
         self.logvar_buf = []
         
     def encode(self, x):
-        x = x.unsqueeze(1)
         z_aug = self.encoder(x)
         mu = self.mu_fc(z_aug)
         logvar = self.logvar_fc(z_aug)
@@ -76,13 +72,12 @@ class VAE(nn.Module):
     def decode(self, z1):
         temp = self.fc_decoder(z1)
         x  = self.decoder(temp)
-        x = x.squeeze(1)
         return x
     
     def forward(self, x):
         mu, logvar = self.encode(x)
         z1 = self.reparameterize(mu, logvar)
-        return self.decode(z1)
+        return self.decode(z1), mu, logvar
         
 
 class LatentRL(nn.Module):
@@ -101,7 +96,7 @@ class LatentRL(nn.Module):
            nn.ReLU(),
            nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1), # 32 x 4 x 4
            nn.BatchNorm2d(32),
-           nn.ReLU()
+           nn.ReLU(),
         )
 
         # Actor network components
@@ -125,9 +120,12 @@ class LatentRL(nn.Module):
             nn.ReLU(),
             nn.Linear(32, 16),
             nn.ReLU(),
-            nn.Linear(16, 32),
+            nn.Linear(16, 16),
             nn.ReLU(),
-            nn.Linear(32, 16),
+            nn.Linear(16, 16),
+            nn.ReLU(),
+            nn.Linear(16, 16),
+            nn.ReLU()
         )
 
         # Predicts the action vector 
@@ -138,9 +136,14 @@ class LatentRL(nn.Module):
             nn.Linear(64, 32),
             nn.ReLU(),
             nn.Linear(32, 16),
-            nn.LeakyReLU(),
+            nn.ReLU(), 
             nn.Linear(16, 8),
-            nn.Tanh()
+            nn.ReLU(),
+            nn.Linear(8, 8),
+            nn.ReLU(),
+            nn.Linear(8, 8),
+            nn.ReLU(),
+            nn.Linear(8, 8)
         )
         
         # Critic network which predicts value
@@ -151,25 +154,19 @@ class LatentRL(nn.Module):
             nn.ReLU(),  
             nn.Flatten(), # 256
             nn.Linear(256, 128),
-            nn.LeakyReLU(),  
+            nn.ReLU(),
             nn.Linear(128, 64),
-            nn.LeakyReLU(),  
+            nn.ReLU(),
             nn.Linear(64, 32),
-            nn.LeakyReLU(),
-            nn.Linear(32, 16),
-            nn.LeakyReLU(),
-            nn.Linear(16, 8),
-            nn.LeakyReLU(),
-            nn.Linear(8, 16),
-            nn.LeakyReLU(),
-            nn.Linear(16, 8),
-            nn.LeakyReLU(),
+            nn.ReLU(),
+            nn.Linear(32, 8),
+            nn.ReLU(),
             nn.Linear(8, 4),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(4, 2),
-            nn.LeakyReLU(),
+            nn.ReLU(),
             nn.Linear(2, 1),
-            nn.LeakyReLU()
+            nn.ReLU()
         )
 
         # Reward network
@@ -200,7 +197,7 @@ class LatentRL(nn.Module):
             nn.Linear(16, 4),
             nn.Sigmoid(),
             nn.Linear(4, 1),
-            nn.ReLU()
+            nn.Sigmoid()
         )
 
     def reward(self, z_processed, action):
@@ -228,7 +225,7 @@ class LatentRL(nn.Module):
 
         # Shared network that processes z before sending it to other networks
         z_processed = self.subgrids_net(z)
-        #print((z_processed > 0).sum())
+
         # Get the action (i.e. p and v)
         temp = self.actor_shared(z_processed) 
         tmp_p = self.p_net(temp)
@@ -239,7 +236,6 @@ class LatentRL(nn.Module):
         action = torch.cat((p, v), 1)
         # Predict the value
         value = self.critic(z_processed)
-        #print('Value: {}'.format(value))
         # Predict the reward
         #print(action.shape)
         net_reward = self.reward(z_processed, action)
