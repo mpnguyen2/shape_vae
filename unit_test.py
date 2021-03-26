@@ -2,11 +2,14 @@ import numpy as np
 import torch
 from utils import get_sample
 from torch.distributions import Categorical, multivariate_normal
-from net_model_2 import LatentRL
+from net_model_3_minh import LatentRL
 
                                   
 ac_model = LatentRL()
 
+z = torch.ones(1, 8, 16, 16)
+action, z1, value, net_reward = ac_model(z)
+print(action.shape, z1.shape, value.shape, net_reward.shape)
 for name, param in ac_model.named_parameters():
     if param.requires_grad:
         print(name)

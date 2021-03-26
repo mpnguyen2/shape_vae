@@ -1,0 +1,18 @@
+
+Network for p and v:
+
+Let p1, p2, p3, and p4 are 4 vectors (each has dim 4 so 16 entries in total) that represent the probability distribution of quadrants in 4 levels 1, 2, 3, and 4.
+
+Here is the proposed hierarchy network to obtain p = (p1, p2, p3, p4)
+Given a z, we have a CNN ended by dense layers that output p1
+From p1 we get z_l1, which is the quadrant of z corresponding to p1.
+Given z_l1 (z at level 1), we have another CNN that output p2.
+Similarly, we get z_l2, z_l3, and those infer p3, and p4.
+From p4 we get z1 (which is actually z_l4)
+
+From z1, we build network with only dense layers that output v
+
+Now action is a = (p, v). value is the usual value function and net_reward is the artificial net that takes z as input and outputs a value that is as close to the original reward of x as possible. Each of these two has their own networks that start from the common z_common. Note that z_common leads to p1 via the quadl1 (quadrant level 1) deep network.
+
+Plan:
+For now, we just stick with REINFORCE and our current VAE. We first focus on network for p and v to see if the result can be improved. Only after that, we continue with other methods: upgrade RL algorithm, start with a more complicated VAE, put in Sparse GP or predefined target, and so on.
