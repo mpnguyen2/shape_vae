@@ -18,7 +18,7 @@ def initialize():
     the up and down heights of the shape along the horizontal[random+128:random+128+256]
     """
     X = np.zeros((512, 512), dtype=int)
-    X1 = 0.4*np.random.rand(512, 512) # real-valued of X
+    # X1 = 0.4*np.random.rand(512, 512) # real-valued of X
     milestoneX_up = np.zeros(17)
     milestoneX_down = np.zeros(17)
     for i in range(17):
@@ -30,12 +30,12 @@ def initialize():
             up = int(milestoneX_up[i]*(1.0-(j/16.0)) + milestoneX_up[i+1]*(j/16.0))
             down = int(milestoneX_down[i]*(1.0-(j/16.0)) + milestoneX_down[i+1]*(j/16.0))
             X[k+j, 256-down: 256+up] = np.ones(up+down)
-            X1[k+j, 256-down:256+up] = 0.4*np.random.rand(up+down)+0.6
+            #X1[k+j, 256-down:256+up] = 0.4*np.random.rand(up+down)+0.6
         k += 16
     area = np.sum(X)
     peri = 4*area - 2*(np.sum(np.logical_and(X[1:,:], X[:-1,:])) \
                        + np.sum(np.logical_and(X[:,1:], X[:,:-1])))
-    return area, peri, X, X1
+    return area, peri, X
 
 def get_sample():
     """
@@ -92,7 +92,7 @@ def get_batch_sample(batch_size):
         x[i,:,:,:] = get_sample()
     return x
     
-def decode_pic(X1, vae_model, device):
+def decode_pic(X, vae_model, device):
     """
     Decode each subgrid of X to a low-dim vector and put together to get z
     Return z as a tensor
@@ -100,7 +100,7 @@ def decode_pic(X1, vae_model, device):
     z = torch.tensor(np.zeros((8, 16, 16)), dtype=torch.float).to(device)
     for i in range(16):
         for j in range(16):
-            mu, logvar = vae_model.encode(torch.tensor(X1[i*32:(i+1)*32,\
+            mu, logvar = vae_model.encode(torch.tensor(X[i*32:(i+1)*32,\
                         j*32:(j+1)*32], dtype=torch.float).unsqueeze(0).unsqueeze(0).to(device))         
             z[:, i, j] = vae_model.reparameterize(mu, logvar).squeeze()
     return z                  
@@ -116,7 +116,6 @@ def subgrid_ind(p):
         cy = cy*2 + (p[i]//2)
     return int(cx), int(cy)
 
-'''
 def step(z, p, v, device):
     """
     Simulate the dynamics of latent state and output both the true reward.
@@ -126,18 +125,17 @@ def step(z, p, v, device):
     v: how much to update
     Return tensor z1
     """
-    eps = 0.6
-    v_dat = v.detach().numpy()
-    if np.max(np.abs(v_dat)) != 0:
-        v_dat = v_dat/np.max(np.abs(v_dat))
+    eps = 0.05
+    v_dat = v.cpu().detach().numpy()
+    if np.linalg.norm(v_dat) != 0:
+        v_dat = v_dat/np.linalg.norm(v_dat)
         
     cx, cy = subgrid_ind(p)
-    z1_dat = z[:, cx, cy].detach().numpy() + eps*v_dat
-    z1_dat = np.minimum(z1_dat, 0.99)
+    z1_dat = z[:, cx, cy].cpu().detach().numpy() + eps*v_dat
+    z1_dat = np.maximum(np.minimum(z1_dat, 0.99), 0)
     return torch.tensor(z1_dat).to(device)
-'''
 
-def updateX(X, X1, old_area, old_peri, p, x):
+def updateX(X, old_area, old_peri, p, x):
     """ Calculate new reward from old reward using only part is modified
     and neighboring cells in X
     X: big image
@@ -150,8 +148,8 @@ def updateX(X, X1, old_area, old_peri, p, x):
     cx, cy = subgrid_ind(p)
     # Find np data of the old and the new subgrid
     x_old = X[cx*n:(cx+1)*n, cy*n:(cy+1)*n]
-    x1_new = x.cpu().squeeze().clone().detach().numpy()
-    x_new = np.array(x1_new > 0.5, dtype=int)
+    x_new = x.cpu().squeeze().clone().detach().numpy()
+    x_new = np.array(x_new > 0.5, dtype=int)
     
     # Calculate area by tracking the difference of number of 1 squares
     area = old_area + np.sum(x_new) - np.sum(x_old)
@@ -183,7 +181,6 @@ def updateX(X, X1, old_area, old_peri, p, x):
             
     # Finally update X and X1
     X[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x_new
-    X1[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x1_new
 
     return area, peri
 
@@ -198,10 +195,10 @@ def updateZ(z, p, z1, device):
     z[:, cx, cy] = z1.cpu().detach().numpy()
     return torch.tensor(z).to(device)
 
-def updateX_no_reward(X, X1, p, x):
+def updateX_no_reward(X, p, x):
     n = 32
     cx, cy = subgrid_ind(p)
-    x1_new = x.cpu().squeeze().clone().detach().numpy()
-    x_new = np.array(x1_new > 0.5, dtype=int)
+    x_new = x.cpu().squeeze().clone().detach().numpy()
+    x_new = np.array(x_new > 0.5, dtype=int)
     X[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x_new
-    X1[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x1_new
+    #X1[cx*n:(cx+1)*n, cy*n:(cy+1)*n] = x1_new

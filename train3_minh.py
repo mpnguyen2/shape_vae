@@ -14,7 +14,7 @@ from collections import namedtuple
 import time
 
 from net_model_3_minh import VAE, LatentRL
-from utils3_minh import initialize, updateX, updateZ, decode_pic, get_batch_sample
+from utils3_minh import get_batch_sample, initialize, decode_pic, updateX, step, updateZ
 
 
 # Variables get updated every timestep: X, area, peri
@@ -72,7 +72,7 @@ def pretrain_vae(vae_model, vae_opt, num_iter, sample_size=1024):
     print("Finished Pre Train")
 
         
-def sample(vae_model, ac_model, p, z, X, X1, area, peri):
+def sample(vae_model, ac_model, p, z, X, area, peri):
     ''' 
     Given previous (x, z, action) data
     We sample the next (x, z, action) data and update other values accordingly
@@ -80,8 +80,8 @@ def sample(vae_model, ac_model, p, z, X, X1, area, peri):
     x = vae_model.x_buf[-1]
     # Sample data for VAE training
     mu, logvar = vae_model.encode(x.unsqueeze(0))
-    vae_model.mu_buf.append(mu.squeeze())
-    vae_model.logvar_buf.append(logvar.squeeze())
+    #vae_model.mu_buf.append(mu.squeeze())
+    #vae_model.logvar_buf.append(logvar.squeeze())
     
     # Sampe z and z1 from the VAE. Note that in the previous iteration, 
     # z1 is updated when it hasn't passed through decoder yet.
@@ -91,10 +91,10 @@ def sample(vae_model, ac_model, p, z, X, X1, area, peri):
     z = updateZ(z, p, z1, device)
     
     # Reconstruct new x from new z and put it to x reconstruction buffer
-    vae_model.x_recon_buf.append(vae_model.decode(z1.unsqueeze(0)).squeeze(0))
+    #vae_model.x_recon_buf.append(vae_model.decode(z1.unsqueeze(0)).squeeze(0))
     
     # Sample policy, value fct, and artificial reward
-    action, z1, value, net_reward = ac_model(z.unsqueeze(0))
+    action, value, net_reward = ac_model(z.unsqueeze(0))
     action, value, net_reward = action.squeeze(0), value.squeeze(0), net_reward.squeeze(0)
     
     # Get quardrant position (prob) info from actions
@@ -104,7 +104,7 @@ def sample(vae_model, ac_model, p, z, X, X1, area, peri):
         p[i] = int(m.sample())
         log_probs.append(m.log_prob(torch.tensor(p[i]).to(device)))
     # Get how much change v from actions (modeled as a Gaussian)
-    m = multivariate_normal.MultivariateNormal(loc=action[16:], covariance_matrix=torch.eye(8).to(device))
+    m = multivariate_normal.MultivariateNormal(loc=action[16:], covariance_matrix=0.2*torch.eye(8).to(device))
     v = m.sample()
     log_probs.append(m.log_prob(v))
     
@@ -112,12 +112,15 @@ def sample(vae_model, ac_model, p, z, X, X1, area, peri):
     ac_model.saved_actions.append(SavedAction(torch.stack(log_probs), value))
     ac_model.net_rewards.append(net_reward)
     
+    # update z1
+    z1 = step(z, p, v, device)
+    
     # x is updated so that x can be fed into the next iteration
-    x = vae_model.decode(z1)
-    vae_model.x_buf.append(x.squeeze(0).clone().detach())
+    x = vae_model.decode(z1.unsqueeze(0))
+    #vae_model.x_buf.append(x.squeeze(0).clone().detach())
     
     # Get true reward
-    area, peri = updateX(X, X1, area, peri, p, x)
+    area, peri = updateX(X, area, peri, p, x)
     if peri == 0:
         r = float(0)
     else:
@@ -201,7 +204,7 @@ def trainAC_per_eps(ac_opt, ac_model, gamma):
     return return_reward, reward_loss
         
 def training_per_eps(vae_opt, vae_model, ac_opt, ac_model,\
-                     p, z, X, X1, area, peri, T, gamma):
+                     p, z, X, area, peri, T, gamma):
     """ 
     Sampling, then train VAE, then train actor critic for one episode.
     Then refresh.
@@ -210,8 +213,9 @@ def training_per_eps(vae_opt, vae_model, ac_opt, ac_model,\
     """
 
     for t in range(T):
-        area, peri = sample(vae_model, ac_model, p, z, X, X1, area, peri)
-    vae_loss = trainVAE_per_eps(vae_opt, vae_model)
+        area, peri = sample(vae_model, ac_model, p, z, X, area, peri)
+    #vae_loss = trainVAE_per_eps(vae_opt, vae_model)
+    vae_loss = 0
     reward, reward_loss = trainAC_per_eps(ac_opt, ac_model, gamma)
     return area, peri, vae_loss, reward, reward_loss
 
@@ -245,7 +249,7 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
     # Declare data for main training
     # Large image X get a small part updated each time step and refresh every 10 episodes
     X = np.zeros((512, 512), dtype=int)
-    X1 = np.zeros((512, 512), dtype=float)
+    #X1 = np.zeros((512, 512), dtype=float)
     rewards = [] # rewards log
     
     ## TRAIN WITH VAE ##
@@ -253,7 +257,7 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
     for i_episode in range(num_eps_with_VAE):
         if i_episode % initialize_interval == 0:
             # Initialize X and z every 10 episodes
-            area, peri, X, X1 = initialize()
+            area, peri, X = initialize()
             init_reward = np.sqrt(area)/peri
             # Set each (8, :, :,) of z to be the encoding of a cell in the subgrid of X
             z = decode_pic(X, vae_model, device)
@@ -266,12 +270,12 @@ def train(num_iter_pretrain_vae, num_eps_with_VAE, \
                 vae_model.x_buf[0] = tmp
         # training one episode
         area, peri, vae_loss, reward, reward_loss = training_per_eps(vae_opt, vae_model, \
-                        ac_opt, ac_model, p, z, X, X1, area, peri, T, discounted_rate) 
+                        ac_opt, ac_model, p, z, X, area, peri, T, discounted_rate) 
         # Log result every log_interval episodes
         if i_episode % log_interval == 0:
             # Log VAE loss and current cumulative reward
-            print('Episode {}: init_reward:{}, cumulative reward: {}; Time elapsed: {} seconds\n'\
-                  .format(i_episode+1, init_reward, reward, time.time()-cur_time))
+            print('Episode {}: init_reward:{}, cumulative reward: {}; percentage: {:.2f}; Time elapsed: {} seconds\n'\
+                  .format(i_episode+1, init_reward, reward, 100*reward/init_reward, time.time()-cur_time))
             rewards.append(reward)
             cur_time = time.time()
         if i_episode % save_interval == 0:

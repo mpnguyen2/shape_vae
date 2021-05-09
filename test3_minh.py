@@ -13,7 +13,7 @@ import numpy as np
 import cv2
 from net_model_3_minh import VAE, LatentRL
 from train3_minh import train
-from utils3_minh import initialize, decode_pic, updateZ, updateX_no_reward
+from utils3_minh import initialize, decode_pic, step, updateZ, updateX_no_reward
 
 #device = torch.device("cpu")
 device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
@@ -23,8 +23,8 @@ def run_traj(vae_model_path, ac_model_path, out_file, num_step):
     vae_model = VAE().to(device); ac_model = LatentRL().to(device)
     vae_model.load_state_dict(torch.load(vae_model_path))
     ac_model.load_state_dict(torch.load(ac_model_path))
-    _, _, X, X1 = initialize()
-    z = decode_pic(X1, vae_model, device)
+    _, _, X = initialize()
+    z = decode_pic(X, vae_model, device)
     p = np.zeros(4); #v = torch.zeros(8)
     # Create video writer
     fourcc = cv2.VideoWriter_fourcc(*'WMV1')
@@ -33,11 +33,11 @@ def run_traj(vae_model_path, ac_model_path, out_file, num_step):
     # Doing forward pass for num_step steps using loaded models
     for i in range(num_step):
         ## Visualization by adding X to a video ##
-        out.write(X)
+        out.write(np.array((1-X)*255, dtype=np.uint8))
         #cv2.imshow('frame', X1)
         ## Perform action and update vars after each time step  
         # Perform action -> (p, v)
-        action, z1, _ , _ = ac_model(z.unsqueeze(0))
+        action, _ , _ = ac_model(z.unsqueeze(0))
         action = action.squeeze(0)
         ''' DEBUG
         if i %20 == 0:
@@ -47,21 +47,22 @@ def run_traj(vae_model_path, ac_model_path, out_file, num_step):
         #v = action[16:]
         for i in range(4):
             p[i] = torch.argmax(action[4*i:4*i+4]).item()
+        z1 = step(z, p, action[16:], device)
         #v = action[16:]
         # Update z, z1, x, X
-        z = updateZ(z, p, z1.squeeze(), device)
-        x = vae_model.decode(z1)
-        updateX_no_reward(X, X1, p, x)
+        z = updateZ(z, p, z1, device)
+        x = vae_model.decode(z1.unsqueeze(0))
+        updateX_no_reward(X, p, x)
     # Release test video
     out.release()
     #cv2.destroyAllWindows()
     
 #### TESTING TRAIN ####
-
+'''
 train(num_iter_pretrain_vae=5, num_eps_with_VAE=1000, \
-          initialize_interval=10, T=64, discounted_rate=0.99, \
+          initialize_interval=10, T=128, discounted_rate=0.99, \
               log_interval=20, save_interval=100)
-
+'''
 vae_model_path = 'models/vae_model1'
 ac_model_path = 'models/ac_model1'
 out_file = 'test_vid/test2.wmv'

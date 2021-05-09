@@ -4,7 +4,7 @@ This file consists of description of all network as well as forward definition
 
 import torch
 from torch import nn
-from torch.nn import functional as F
+#from torch.nn import functional as F
 #from torchsummary import summary
 #from torch.utils.tensorboard import SummaryWriter
 
@@ -26,10 +26,10 @@ class VAE(nn.Module):
             nn.ReLU(),
             nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 8 x 8
             nn.BatchNorm2d(64),
-            nn.Tanh(),
+            nn.ReLU(),
             nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1), # 128 x 4 x 4 
             nn.BatchNorm2d(128),
-            nn.Tanh(),
+            nn.ReLU(),
             nn.Flatten() # 2048
         )       
         # Fully connected to predict mean and variance
@@ -67,7 +67,7 @@ class VAE(nn.Module):
         # For now, just do Gaussian output. Consider normalizing flow such as IAF later
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
-        return mu + eps*std
+        return torch.sigmoid(mu + eps*std)
         
     def decode(self, z1):
         temp = self.fc_decoder(z1)
@@ -111,7 +111,7 @@ class LatentRL(nn.Module):
             nn.Linear(64, 16), # 16
             nn.ReLU(),
             nn.Linear(16, 4), # 4
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Softmax(dim=1)
         )
         
@@ -133,7 +133,7 @@ class LatentRL(nn.Module):
             nn.Linear(64, 16), # 16
             nn.ReLU(),
             nn.Linear(16, 4), # 4
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Softmax(dim=1)
         )
         
@@ -152,7 +152,7 @@ class LatentRL(nn.Module):
             nn.Linear(32, 16), # 16
             nn.ReLU(),
             nn.Linear(16, 4), # 4
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Softmax(dim=1)
         )
         
@@ -164,7 +164,7 @@ class LatentRL(nn.Module):
             nn.Linear(16, 8), # 8
             nn.ReLU(),
             nn.Linear(8, 4), # 4
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Softmax(dim=1)
         )
 
@@ -269,9 +269,9 @@ class LatentRL(nn.Module):
         
         ## Forward v and concat action (p, v) ##
         # The chosen subcell to change. v, how much to change, depends on z1 only
-        z1 = torch.matmul(p4, z_l3.reshape(-1, 2, 1, 2, 1).swapaxes(2, 3).reshape(-1, 4, 1)\
+        z_l4 = torch.matmul(p4, z_l3.reshape(-1, 2, 1, 2, 1).swapaxes(2, 3).reshape(-1, 4, 1)\
                     .swapaxes(0, 1).reshape(4, -1)).reshape(-1, 8)
-        v = self.v_net(z1)
+        v = self.v_net(z_l4)
         # Concat p1, p2, p3, p4 into p and then concat p and v
         p = torch.stack([p1, p2, p3, p4]).swapaxes(0, 1).reshape(-1, 16)
         action = torch.cat((p, v), 1)
@@ -292,7 +292,7 @@ class LatentRL(nn.Module):
         print("Value:", value.shape)
         print("Reward:", net_reward.shape)
         '''
-        return action, z1, value, net_reward
+        return action, value, net_reward
 
 
 '''
