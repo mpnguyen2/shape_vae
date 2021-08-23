@@ -52,7 +52,7 @@ def run_traj(ae_model_path, rl_model_path, out_file, num_step, write_interval=1)
     
 #### TESTING TRAIN ####
 
-train(newtrain_ae=True, newtrain_reward=True, num_eps=1, 
+train(newtrain_ae=True, newtrain_reward=False, num_eps=1, 
       num_reward_train=0, num_pretrain_ae=20, 
       initialize_interval=1, T=200, discounted_rate=0.99,
               log_interval=10, save_interval=5)

@@ -3,18 +3,13 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
 import torch
-from utils import initialize, reward
+from utils import initialize, reward, square
 from torch.utils.data import DataLoader, RandomSampler
 import torchvision
 import torchvision.transforms as transforms
 from net_model import AE
 
 device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
-
-# Basis
-B = np.zeros((32, 16))
-B[:16,:] = np.eye(16)
-B[16:,:] = -np.eye(16)
 
 # Load MNIST dataset
 transform = transforms.Compose([
@@ -40,7 +35,7 @@ class IsoperiEnv(gym.Env):
         #self.max_act = 1; self.min_act = -1
         self.num_coef = 16
         # action is now just the direction to move (discrete now)
-        self.action_space = spaces.Discrete(32)
+        self.action_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         self.observation_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         # state is the level-set function phi
         self.state = None
@@ -57,8 +52,8 @@ class IsoperiEnv(gym.Env):
 
     def step(self, act):
         self.num_step += 1
-        eps = 0.1
-        self.state += eps*B[act,:]
+        eps = 0.02
+        self.state += eps*act
 
         #self.state = np.clip(self.state, 0.1, 0.9)
         # Find reward by using reward of decoder
@@ -67,7 +62,7 @@ class IsoperiEnv(gym.Env):
         #self.reward_model(torch.tensor(self.state, dtype=torch.float).to(device)).item()
         # When num of step is more than 200, stop
         done = False
-        if self.num_step >= 200:
+        if self.num_step >= 100:
             done = True
         return np.array(self.state), reward1, done, {}
 
@@ -77,17 +72,17 @@ class IsoperiEnv(gym.Env):
     def reset_at(self, shape='random'):
         self.num_step = 0
         '''
-        if np.random.rand() < 0.9:
-            area, peri, x = initialize(device)
-            _, z = self.ae_model(x.unsqueeze(0))
-            self.state = z.squeeze().cpu().detach().numpy()
-        else:
+        #area, peri, x = initialize(device)
+        x = torch.tensor(square(), dtype=torch.float).to(device)
+        _, z = self.ae_model(x.unsqueeze(0))
+        self.state = z.squeeze().cpu().detach().numpy()
         '''
         x, label= next(iter(dataloader))
-        while label.item() != 8:
-            x, label= next(iter(dataloader))
-        mu, logvar = self.ae_model.encode(x.to(device))
+        #while label.item() != 8:
+        #    x, label= next(iter(dataloader))
+        mu, logvar = self.ae_model.encode(x.squeeze().to(device))
         self.state = mu.cpu().detach().numpy().squeeze()
+    
         return self.state
-
+    
                              

@@ -19,7 +19,7 @@ img = img[:,:,1]
 img = 1-np.round(img/255)
 print(img[0:10, 0:10])
 '''
-
+'''
 # Load MNIST dataset
 transform = transforms.Compose([
     transforms.Resize((32, 32)),
@@ -32,7 +32,7 @@ dataset = torchvision.datasets.MNIST(
 dataloader = DataLoader(
     dataset, batch_size=batch_size, shuffle=True
 )
-
+'''
 ae_model_path = 'models/ae_model1'
 #reward_model_path = 'models/reward_model1'
 
@@ -43,15 +43,9 @@ ae_model = AE().to(device)
 #ae_model.load_state_dict(torch.load(ae_model_path))
 #reward_model.load_state_dict(torch.load(reward_model_path))
 
-maxn = 0
-for _ in range(10000):
-    x, _ = next(iter(dataloader))
-    x_dat = x.cpu().detach().numpy().squeeze()
-    mu, logvar = ae_model.encode(x.to(device))  
-    z_dat = ae_model.reparameterize(mu, logvar).cpu().detach().numpy().squeeze()
-    maxn = max(maxn, reward(x_dat))
-
-print(maxn)
+x = torch.tensor(np.random.rand(1, 32, 32), dtype=torch.float).to(device)
+x1, z = ae_model(x)
+print(x1.shape, z.shape)
 
 # Test and compare
 #z, R = get_reward_sample(ae_model, 10000, device)

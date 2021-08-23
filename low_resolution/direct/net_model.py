@@ -23,7 +23,6 @@ class AE(nn.Module):
         # Store set of x and x_recon for traing 
         #self.x_buf = []
         #self.x_recon_buf = []
-        
         # Initialize Encoder Conv Layer
         self.encoder = nn.Sequential(
             nn.Conv2d(input_channels, 4, kernel_size=3, stride=2, padding=1), # 4 x 16 x 16
@@ -71,7 +70,7 @@ class AE(nn.Module):
         )
         
     def encode(self, x):
-        z_aug = self.encoder(x)
+        z_aug = self.encoder(x.unsqueeze(1))
         return self.fc_mu(z_aug), self.fc_logvar(z_aug)
     
     def reparameterize(self, mu, logvar):
@@ -86,8 +85,8 @@ class AE(nn.Module):
     def forward(self, x):
         mu, logvar = self.encode(x)
         z = self.reparameterize(mu, logvar)
-        return self.decode(z), mu, logvar
-'''   
+        return self.decode(z).squeeze(1), z
+
 # Approximate reward function as a fct of latent variable     
 class Reward(nn.Module):
     def __init__(self):
@@ -188,4 +187,3 @@ class LatentRL(nn.Module):
         value = self.critic(z)
         self.values.append(value)
         return act.unsqueeze(0)
-'''

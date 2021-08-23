@@ -50,7 +50,7 @@ def pretrain_ae(ae_model, ae_opt, reward_model, num_iter, sample_size=512):
         X, _ = get_batch_sample(sample_size, device, int_entry=True) # 1024 x 32 x 32
         # compute total_loss for log purpose
         #total_loss = 0
-                
+
         for i_epoch in range(num_epoch):
             ae_opt.zero_grad()
             # Shuffle mini-batch

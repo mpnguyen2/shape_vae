@@ -3,7 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
 import torch
-from utils import initialize, reward
+from utils import initialize, reward, square
 from torch.utils.data import DataLoader, RandomSampler
 import torchvision
 import torchvision.transforms as transforms
@@ -12,10 +12,6 @@ import cv2
 
 device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
 
-# Basis
-B = np.zeros((32, 16))
-B[:16,:] = np.eye(16)
-B[16:,:] = -np.eye(16)
 
 # Load MNIST dataset
 transform = transforms.Compose([
@@ -43,7 +39,7 @@ class IsoperiTestEnv(gym.Env):
         #self.max_act = 1; self.min_act = -1
         self.num_coef = 16
         # action is the optimal speed, the magnitude of the optimal/desired direction to move
-        self.action_space = spaces.Discrete(32)
+        self.action_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         self.observation_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         # state is the level-set function phi
         self.state = None
@@ -66,22 +62,23 @@ class IsoperiTestEnv(gym.Env):
 
     def step(self, act):
         self.num_step += 1
-        eps = 0.05
-        self.state += eps*B[act,:]
+        eps = 0.02
+        self.state += eps*act
 
         #self.state = np.clip(self.state, 0.1, 0.9)
         # Find reward by using reward of decoder
         x_recon = self.ae_model.decode(torch.tensor(self.state, dtype=torch.float).to(device).unsqueeze(0))
         reward1 = reward(x_recon.squeeze().cpu().detach().numpy())
         
-        if self.num_step%20 == 0:
+        if self.num_step%100 == 0:
             print('Reward:{}'.format(reward1))
             
         # Write state to video:
-        self.out.write(np.array((1-x_recon.squeeze().cpu().detach().numpy())*255, dtype=np.uint8))
+        if self.num_step%50 == 0:
+            self.out.write(np.array((1-x_recon.squeeze().cpu().detach().numpy())*255, dtype=np.uint8))
         # When num of step is more than 200, stop
         done = False
-        if self.num_step >= 1000:
+        if self.num_step >= 10000:
             done = True
             self.out.release()
         return np.array(self.state), reward1, done, {}
@@ -91,13 +88,18 @@ class IsoperiTestEnv(gym.Env):
         
     def reset_at(self, shape='random'):
         #area, peri, x = initialize(device)
-        #_, z = self.ae_model(x.unsqueeze(0))
+        x = torch.tensor(square(), dtype=torch.float).to(device)
+        #print(x[:20, :20])
+        _, z = self.ae_model(x.unsqueeze(0))
         self.num_step = 0
+        '''
         x, label= next(iter(dataloader))
-        #while label.item() != 4:
-        #    x, label= next(iter(dataloader))
+        while label.item() != 8:
+            x, label= next(iter(dataloader))
         mu, logvar = self.ae_model.encode(x.to(device))
         self.state = self.ae_model.reparameterize(mu, logvar).cpu().detach().numpy().squeeze()
+        '''
+        self.state = z.cpu().detach().numpy().squeeze()
         return self.state
     
     '''

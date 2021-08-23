@@ -69,7 +69,7 @@ def initialize(device):
 
 def random_circ(k):
     img1 = np.copy(img)
-    img11 = np.ones((32,32), dtype=float)
+    img11 = np.array(1-img1, dtype=float)
     for _ in range(k):
         i = np.random.randint(low=0, high=32)
         j = np.random.randint(low=0, high=32) 
@@ -78,8 +78,13 @@ def random_circ(k):
             img11[i,j] = 0.5 + 0.5*np.random.rand()
         else:
             img11[i,j] = np.random.rand()
-    return img1, img11
-        
+    return img11
+
+def square():
+    x = np.zeros((32, 32))
+    x[8:24, 8:24] = np.ones((16, 16))
+    return x
+    
 def initializeAE(device, int_entry):
     # Generate sample
     x = np.zeros((32, 32), dtype=int)
@@ -154,11 +159,14 @@ def step(z, v, device):
     
     return t(z_dat, device).unsqueeze(0)
 
-def reward(x):
-    x = x > 0.5
+def gen_sigmoid(x, k, x0):
+    return 1/(1 + np.exp(-k*(x-x0)))
+
+def reward(x_input, k = 10, x0 = .5):
+    x = gen_sigmoid(x_input, k, x0)
     area = np.sum(x)
-    peri = 4*area - 2*(np.sum(np.logical_and(x[1:,:], x[:-1,:])) \
-                       + np.sum(np.logical_and(x[:,1:], x[:,:-1])))
+    peri = 4*area - 2*(np.sum(x[1:,:]*x[:-1,:]) \
+                       + np.sum(x[:,1:]*x[:,:-1]))
     return np.sqrt(area)/peri
 
 def pertube(X):
