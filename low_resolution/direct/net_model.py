@@ -70,7 +70,7 @@ class AE(nn.Module):
         )
         
     def encode(self, x):
-        z_aug = self.encoder(x.unsqueeze(1))
+        z_aug = self.encoder(x)
         return self.fc_mu(z_aug), self.fc_logvar(z_aug)
     
     def reparameterize(self, mu, logvar):
@@ -85,7 +85,7 @@ class AE(nn.Module):
     def forward(self, x):
         mu, logvar = self.encode(x)
         z = self.reparameterize(mu, logvar)
-        return self.decode(z).squeeze(1), z
+        return self.decode(z), z
 
 # Approximate reward function as a fct of latent variable     
 class Reward(nn.Module):

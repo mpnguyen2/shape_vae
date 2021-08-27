@@ -26,7 +26,7 @@ dataloader = DataLoader(
     dataset, batch_size=batch_size, shuffle=True
 )
 
-out_file = 'test_vid/test_sb31.wmv'
+out_file = 'test_vid/test1.wmv'
 
 class IsoperiTestEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -62,7 +62,7 @@ class IsoperiTestEnv(gym.Env):
 
     def step(self, act):
         self.num_step += 1
-        eps = 0.02
+        eps = 0.2
         self.state += eps*act
 
         #self.state = np.clip(self.state, 0.1, 0.9)
@@ -74,11 +74,11 @@ class IsoperiTestEnv(gym.Env):
             print('Reward:{}'.format(reward1))
             
         # Write state to video:
-        if self.num_step%50 == 0:
+        if self.num_step%5 == 0:
             self.out.write(np.array((1-x_recon.squeeze().cpu().detach().numpy())*255, dtype=np.uint8))
         # When num of step is more than 200, stop
         done = False
-        if self.num_step >= 10000:
+        if self.num_step >= 2000:
             done = True
             self.out.release()
         return np.array(self.state), reward1, done, {}
@@ -87,19 +87,20 @@ class IsoperiTestEnv(gym.Env):
         return self.reset_at()
         
     def reset_at(self, shape='random'):
+        self.num_step = 0
+        '''
         #area, peri, x = initialize(device)
         x = torch.tensor(square(), dtype=torch.float).to(device)
         #print(x[:20, :20])
         _, z = self.ae_model(x.unsqueeze(0))
-        self.num_step = 0
         '''
+        number = 5
         x, label= next(iter(dataloader))
-        while label.item() != 8:
+        while label.item() != number:
             x, label= next(iter(dataloader))
-        mu, logvar = self.ae_model.encode(x.to(device))
-        self.state = self.ae_model.reparameterize(mu, logvar).cpu().detach().numpy().squeeze()
-        '''
+        _, z = self.ae_model(x.to(device))
         self.state = z.cpu().detach().numpy().squeeze()
+         
         return self.state
     
     '''

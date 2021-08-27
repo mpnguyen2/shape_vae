@@ -42,6 +42,7 @@ class IsoperiEnv(gym.Env):
         self.num_step = 0
         # pretrained model for latent environment use
         self.ae_model = ae_model
+
         # Other useful fields
         self.seed()
     
@@ -80,7 +81,7 @@ class IsoperiEnv(gym.Env):
         x, label= next(iter(dataloader))
         #while label.item() != 8:
         #    x, label= next(iter(dataloader))
-        mu, logvar = self.ae_model.encode(x.squeeze().to(device))
+        mu, logvar = self.ae_model.encode(x.to(device))
         self.state = mu.cpu().detach().numpy().squeeze()
     
         return self.state
