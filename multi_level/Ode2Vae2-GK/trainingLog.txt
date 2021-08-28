@@ -1,0 +1,681 @@
+Iter:0  lhood:-1222227.12  kl_z:304338.62  kl_w: 9570.55
+Iter:1  lhood:-972064.62  kl_z:280459.75  kl_w: 9570.50
+Iter:2  lhood:-691385.12  kl_z:266248.69  kl_w: 9570.51
+Iter:3  lhood:-552747.69  kl_z:197290.45  kl_w: 9570.53
+Iter:4  lhood:-379733.72  kl_z:249849.36  kl_w: 9570.54
+Iter:5  lhood:-316355.03  kl_z:164019.84  kl_w: 9570.56
+Iter:6  lhood:-257457.83  kl_z:205725.70  kl_w: 9570.58
+Iter:7  lhood:-221191.95  kl_z:219824.91  kl_w: 9570.61
+Iter:8  lhood:-191202.84  kl_z:121480.12  kl_w: 9570.65
+Iter:9  lhood:-167677.31  kl_z:150366.42  kl_w: 9570.70
+Iter:10 lhood:-152397.91  kl_z:111278.52  kl_w: 9570.74
+Iter:11 lhood:-142321.59  kl_z:127731.42  kl_w: 9570.78
+Iter:12 lhood:-136043.03  kl_z:137779.19  kl_w: 9570.83
+Iter:13 lhood:-129673.27  kl_z:75104.54  kl_w: 9570.88
+Iter:14 lhood:-127830.48  kl_z:96460.30  kl_w: 9570.93
+Iter:15 lhood:-127183.92  kl_z:75999.91  kl_w: 9570.98
+Iter:16 lhood:-125822.54  kl_z:71766.55  kl_w: 9571.04
+Iter:17 lhood:-124062.15  kl_z:97830.35  kl_w: 9571.10
+Iter:18 lhood:-119436.31  kl_z:75652.00  kl_w: 9571.16
+Iter:19 lhood:-121665.77  kl_z:139976.34  kl_w: 9571.24
+ Epoch:   0/ 30 tr_elbo:366424.12  test_mse:0.027
+
+ Iter:0  lhood:-116527.42  kl_z:61460.74  kl_w: 9571.34
+Iter:1  lhood:-114903.98  kl_z:60607.07  kl_w: 9571.43
+Iter:2  lhood:-113103.91  kl_z:55963.53  kl_w: 9571.54
+Iter:3  lhood:-113018.44  kl_z:46946.05  kl_w: 9571.64
+Iter:4  lhood:-111493.78  kl_z:65069.11  kl_w: 9571.74
+Iter:5  lhood:-109172.78  kl_z:71031.36  kl_w: 9571.84
+Iter:6  lhood:-107996.48  kl_z:50016.41  kl_w: 9571.95
+Iter:7  lhood:-105833.50  kl_z:45403.47  kl_w: 9572.06
+Iter:8  lhood:-108331.68  kl_z:55677.39  kl_w: 9572.17
+Iter:9  lhood:-111104.80  kl_z:72660.20  kl_w: 9572.29
+Iter:10 lhood:-105400.59  kl_z:39591.46  kl_w: 9572.42
+Iter:11 lhood:-103474.23  kl_z:33186.42  kl_w: 9572.54
+Iter:12 lhood:-108304.12  kl_z:35998.91  kl_w: 9572.66
+Iter:13 lhood:-107512.77  kl_z:41025.90  kl_w: 9572.77
+Iter:14 lhood:-104624.53  kl_z:30670.27  kl_w: 9572.89
+Iter:15 lhood:-102982.64  kl_z:47059.57  kl_w: 9573.00
+Iter:16 lhood:-102529.23  kl_z:39836.14  kl_w: 9573.11
+Iter:17 lhood:-104300.62  kl_z:32102.00  kl_w: 9573.22
+Iter:18 lhood:-101387.62  kl_z:16614.23  kl_w: 9573.33
+Iter:19 lhood:-100316.60  kl_z:30311.00  kl_w: 9573.43
+ Epoch:   1/ 30 tr_elbo:162914.66  test_mse:0.021
+
+ Iter:0  lhood:-99881.81  kl_z:31253.70  kl_w: 9573.53
+Iter:1  lhood:-95128.87  kl_z:25225.65  kl_w: 9573.62
+Iter:2  lhood:-96885.25  kl_z:21408.55  kl_w: 9573.71
+Iter:3  lhood:-96728.38  kl_z:33862.62  kl_w: 9573.80
+Iter:4  lhood:-94491.99  kl_z:23073.66  kl_w: 9573.90
+Iter:5  lhood:-94115.86  kl_z:35186.41  kl_w: 9573.98
+Iter:6  lhood:-96233.08  kl_z:21511.04  kl_w: 9574.08
+Iter:7  lhood:-92285.81  kl_z:23052.96  kl_w: 9574.17
+Iter:8  lhood:-89845.05  kl_z:17149.44  kl_w: 9574.26
+Iter:9  lhood:-93222.20  kl_z:33965.36  kl_w: 9574.35
+Iter:10 lhood:-95004.12  kl_z:21732.62  kl_w: 9574.44
+Iter:11 lhood:-88468.04  kl_z:19848.17  kl_w: 9574.53
+Iter:12 lhood:-91240.55  kl_z:13817.38  kl_w: 9574.62
+Iter:13 lhood:-94302.66  kl_z:27215.50  kl_w: 9574.70
+Iter:14 lhood:-86408.19  kl_z:14123.79  kl_w: 9574.80
+Iter:15 lhood:-91548.16  kl_z:10115.17  kl_w: 9574.88
+Iter:16 lhood:-87448.09  kl_z:15315.02  kl_w: 9574.97
+Iter:17 lhood:-92615.27  kl_z:14489.29  kl_w: 9575.04
+Iter:18 lhood:-85414.83  kl_z:10949.05  kl_w: 9575.12
+Iter:19 lhood:-87692.84  kl_z:14625.02  kl_w: 9575.18
+ Epoch:   2/ 30 tr_elbo:126602.65  test_mse:0.020
+
+ Iter:0  lhood:-83535.56  kl_z:9630.38   kl_w: 9575.25
+Iter:1  lhood:-87318.59  kl_z:18309.24  kl_w: 9575.31
+Iter:2  lhood:-84399.92  kl_z:17267.13  kl_w: 9575.37
+Iter:3  lhood:-85730.81  kl_z:14235.84  kl_w: 9575.44
+Iter:4  lhood:-88021.38  kl_z:13040.88  kl_w: 9575.51
+Iter:5  lhood:-86057.34  kl_z:11053.63  kl_w: 9575.58
+Iter:6  lhood:-86804.28  kl_z:14987.71  kl_w: 9575.64
+Iter:7  lhood:-86175.03  kl_z:11002.69  kl_w: 9575.70
+Iter:8  lhood:-83481.37  kl_z:13377.69  kl_w: 9575.76
+Iter:9  lhood:-83669.96  kl_z:12570.21  kl_w: 9575.82
+Iter:10 lhood:-84182.84  kl_z:19454.02  kl_w: 9575.88
+Iter:11 lhood:-83089.00  kl_z:10141.96  kl_w: 9575.94
+Iter:12 lhood:-80778.48  kl_z:14877.97  kl_w: 9576.00
+Iter:13 lhood:-81687.15  kl_z:11446.51  kl_w: 9576.06
+Iter:14 lhood:-83059.91  kl_z:13801.27  kl_w: 9576.13
+Iter:15 lhood:-82169.94  kl_z:11081.12  kl_w: 9576.19
+Iter:16 lhood:-81185.82  kl_z:10296.74  kl_w: 9576.26
+Iter:17 lhood:-78676.16  kl_z:10725.46  kl_w: 9576.33
+Iter:18 lhood:-82083.98  kl_z:11747.78  kl_w: 9576.40
+Iter:19 lhood:-80440.42  kl_z:7822.00   kl_w: 9576.47
+ Epoch:   3/ 30 tr_elbo:107633.61  test_mse:0.020
+
+ Iter:0  lhood:-79272.52  kl_z:8311.22   kl_w: 9576.53
+Iter:1  lhood:-80832.02  kl_z:13506.75  kl_w: 9576.60
+Iter:2  lhood:-79390.49  kl_z:11203.67  kl_w: 9576.67
+Iter:3  lhood:-79294.97  kl_z:11600.61  kl_w: 9576.74
+Iter:4  lhood:-78719.29  kl_z:9338.90   kl_w: 9576.81
+Iter:5  lhood:-80181.18  kl_z:9670.51   kl_w: 9576.87
+Iter:6  lhood:-80765.46  kl_z:9345.40   kl_w: 9576.93
+Iter:7  lhood:-79506.01  kl_z:9424.01   kl_w: 9577.00
+Iter:8  lhood:-81464.59  kl_z:6777.46   kl_w: 9577.06
+Iter:9  lhood:-79449.81  kl_z:11506.77  kl_w: 9577.12
+Iter:10 lhood:-76012.63  kl_z:7456.15   kl_w: 9577.19
+Iter:11 lhood:-80085.97  kl_z:6274.38   kl_w: 9577.26
+Iter:12 lhood:-80281.08  kl_z:10910.88  kl_w: 9577.32
+Iter:13 lhood:-76203.48  kl_z:9484.61   kl_w: 9577.39
+Iter:14 lhood:-78448.14  kl_z:11318.47  kl_w: 9577.46
+Iter:15 lhood:-78748.44  kl_z:9267.24   kl_w: 9577.53
+Iter:16 lhood:-77882.45  kl_z:10583.40  kl_w: 9577.59
+Iter:17 lhood:-77826.48  kl_z:8550.58   kl_w: 9577.64
+Iter:18 lhood:-76156.39  kl_z:7903.08   kl_w: 9577.70
+Iter:19 lhood:-79442.02  kl_z:6795.18   kl_w: 9577.75
+ Epoch:   4/ 30 tr_elbo:103337.50  test_mse:0.019
+
+ Iter:0  lhood:-76496.79  kl_z:8145.07   kl_w: 9577.80
+Iter:1  lhood:-77152.27  kl_z:8932.64   kl_w: 9577.85
+Iter:2  lhood:-76065.01  kl_z:7372.03   kl_w: 9577.90
+Iter:3  lhood:-76251.92  kl_z:10349.56  kl_w: 9577.95
+Iter:4  lhood:-80219.80  kl_z:10847.87  kl_w: 9578.00
+Iter:5  lhood:-76686.30  kl_z:6053.87   kl_w: 9578.07
+Iter:6  lhood:-79504.05  kl_z:9307.21   kl_w: 9578.14
+Iter:7  lhood:-76117.65  kl_z:6683.58   kl_w: 9578.23
+Iter:8  lhood:-78136.67  kl_z:7556.33   kl_w: 9578.31
+Iter:9  lhood:-78487.98  kl_z:7236.26   kl_w: 9578.38
+Iter:10 lhood:-80323.98  kl_z:10623.22  kl_w: 9578.46
+Iter:11 lhood:-76522.77  kl_z:5801.09   kl_w: 9578.54
+Iter:12 lhood:-79239.29  kl_z:13075.80  kl_w: 9578.61
+Iter:13 lhood:-77907.61  kl_z:8648.44   kl_w: 9578.69
+Iter:14 lhood:-74863.84  kl_z:10001.86  kl_w: 9578.77
+Iter:15 lhood:-76030.49  kl_z:15496.26  kl_w: 9578.84
+Iter:16 lhood:-75838.94  kl_z:5004.84   kl_w: 9578.93
+Iter:17 lhood:-75152.43  kl_z:7078.81   kl_w: 9579.01
+Iter:18 lhood:-77730.56  kl_z:11586.88  kl_w: 9579.09
+Iter:19 lhood:-78511.02  kl_z:10880.06  kl_w: 9579.18
+ Epoch:   5/ 30 tr_elbo:117224.41  test_mse:0.020
+
+ Iter:0  lhood:-77942.41  kl_z:7111.31   kl_w: 9579.28
+Iter:1  lhood:-78334.60  kl_z:7690.22   kl_w: 9579.38
+Iter:2  lhood:-75139.98  kl_z:7350.29   kl_w: 9579.46
+Iter:3  lhood:-74409.20  kl_z:9471.59   kl_w: 9579.54
+Iter:4  lhood:-76587.05  kl_z:10872.51  kl_w: 9579.63
+Iter:5  lhood:-77771.29  kl_z:8730.09   kl_w: 9579.72
+Iter:6  lhood:-74753.78  kl_z:6620.85   kl_w: 9579.80
+Iter:7  lhood:-77055.85  kl_z:6317.12   kl_w: 9579.87
+Iter:8  lhood:-75163.12  kl_z:5255.56   kl_w: 9579.95
+Iter:9  lhood:-77452.10  kl_z:8376.54   kl_w: 9580.01
+Iter:10 lhood:-74956.20  kl_z:5896.14   kl_w: 9580.09
+Iter:11 lhood:-77784.86  kl_z:17723.38  kl_w: 9580.15
+Iter:12 lhood:-74400.69  kl_z:9103.59   kl_w: 9580.24
+Iter:13 lhood:-75524.13  kl_z:8302.26   kl_w: 9580.34
+Iter:14 lhood:-75231.39  kl_z:11251.92  kl_w: 9580.43
+Iter:15 lhood:-75816.69  kl_z:12520.22  kl_w: 9580.54
+Iter:16 lhood:-75445.38  kl_z:11475.71  kl_w: 9580.65
+Iter:17 lhood:-74528.86  kl_z:7988.45   kl_w: 9580.75
+Iter:18 lhood:-78216.30  kl_z:9781.70   kl_w: 9580.84
+Iter:19 lhood:-75093.23  kl_z:8009.22   kl_w: 9580.93
+ Epoch:   6/ 30 tr_elbo:100040.69  test_mse:0.020
+
+ Iter:0  lhood:-74887.77  kl_z:11188.17  kl_w: 9581.01
+Iter:1  lhood:-74326.26  kl_z:8023.61   kl_w: 9581.08
+Iter:2  lhood:-75385.67  kl_z:6307.17   kl_w: 9581.16
+Iter:3  lhood:-74161.34  kl_z:6949.11   kl_w: 9581.22
+Iter:4  lhood:-73856.69  kl_z:8630.18   kl_w: 9581.28
+Iter:5  lhood:-74955.67  kl_z:6712.16   kl_w: 9581.34
+Iter:6  lhood:-75579.05  kl_z:8267.93   kl_w: 9581.40
+Iter:7  lhood:-74327.63  kl_z:7638.13   kl_w: 9581.48
+Iter:8  lhood:-77057.88  kl_z:7534.55   kl_w: 9581.54
+Iter:9  lhood:-75307.37  kl_z:10813.28  kl_w: 9581.61
+Iter:10 lhood:-75780.05  kl_z:8155.22   kl_w: 9581.66
+Iter:11 lhood:-75366.54  kl_z:7796.53   kl_w: 9581.73
+Iter:12 lhood:-76928.29  kl_z:4997.17   kl_w: 9581.81
+Iter:13 lhood:-74873.20  kl_z:6151.31   kl_w: 9581.89
+Iter:14 lhood:-74647.02  kl_z:4523.23   kl_w: 9581.96
+Iter:15 lhood:-75727.64  kl_z:8934.55   kl_w: 9582.04
+Iter:16 lhood:-75409.94  kl_z:6626.57   kl_w: 9582.11
+Iter:17 lhood:-75565.31  kl_z:7744.62   kl_w: 9582.18
+Iter:18 lhood:-74665.09  kl_z:6891.43   kl_w: 9582.25
+Iter:19 lhood:-73553.47  kl_z:10648.99  kl_w: 9582.32
+ Epoch:   7/ 30 tr_elbo:107126.53  test_mse:0.020
+
+ Iter:0  lhood:-73694.50  kl_z:6330.06   kl_w: 9582.39
+Iter:1  lhood:-74174.52  kl_z:6703.75   kl_w: 9582.46
+Iter:2  lhood:-75642.59  kl_z:7522.50   kl_w: 9582.53
+Iter:3  lhood:-75294.42  kl_z:5368.56   kl_w: 9582.59
+Iter:4  lhood:-74011.99  kl_z:9153.07   kl_w: 9582.64
+Iter:5  lhood:-74751.20  kl_z:4055.73   kl_w: 9582.71
+Iter:6  lhood:-76635.27  kl_z:5764.20   kl_w: 9582.77
+Iter:7  lhood:-73961.11  kl_z:8231.09   kl_w: 9582.83
+Iter:8  lhood:-74536.62  kl_z:4016.18   kl_w: 9582.89
+Iter:9  lhood:-76114.91  kl_z:3478.87   kl_w: 9582.95
+Iter:10 lhood:-75323.33  kl_z:10498.08  kl_w: 9583.00
+Iter:11 lhood:-73998.11  kl_z:3052.40   kl_w: 9583.07
+Iter:12 lhood:-73591.55  kl_z:3050.43   kl_w: 9583.13
+Iter:13 lhood:-74570.83  kl_z:4341.99   kl_w: 9583.19
+Iter:14 lhood:-75307.47  kl_z:1901.60   kl_w: 9583.24
+Iter:15 lhood:-73567.20  kl_z:5015.79   kl_w: 9583.30
+Iter:16 lhood:-74114.08  kl_z:8678.56   kl_w: 9583.35
+Iter:17 lhood:-75935.28  kl_z:3831.72   kl_w: 9583.41
+Iter:18 lhood:-74262.41  kl_z:4742.46   kl_w: 9583.47
+Iter:19 lhood:-72930.70  kl_z:3588.24   kl_w: 9583.54
+ Epoch:   8/ 30 tr_elbo:89886.64  test_mse:0.020
+
+ Iter:0  lhood:-72515.46  kl_z:2560.80   kl_w: 9583.60
+Iter:1  lhood:-75956.70  kl_z:5369.41   kl_w: 9583.65
+Iter:2  lhood:-74644.87  kl_z:3181.31   kl_w: 9583.71
+Iter:3  lhood:-75891.92  kl_z:8541.49   kl_w: 9583.76
+Iter:4  lhood:-75351.18  kl_z:3831.01   kl_w: 9583.84
+Iter:5  lhood:-76276.38  kl_z:5323.16   kl_w: 9583.91
+Iter:6  lhood:-72839.71  kl_z:4365.19   kl_w: 9583.98
+Iter:7  lhood:-73024.70  kl_z:5064.54   kl_w: 9584.07
+Iter:8  lhood:-75662.17  kl_z:6705.47   kl_w: 9584.16
+Iter:9  lhood:-73279.46  kl_z:4722.25   kl_w: 9584.24
+Iter:10 lhood:-76451.18  kl_z:1174.33   kl_w: 9584.32
+Iter:11 lhood:-74733.73  kl_z:9795.01   kl_w: 9584.41
+Iter:12 lhood:-75131.37  kl_z:4375.91   kl_w: 9584.49
+Iter:13 lhood:-73870.25  kl_z:3567.73   kl_w: 9584.56
+Iter:14 lhood:-73738.66  kl_z:3987.46   kl_w: 9584.64
+Iter:15 lhood:-72591.95  kl_z:5026.92   kl_w: 9584.70
+Iter:16 lhood:-72324.84  kl_z:4527.40   kl_w: 9584.77
+Iter:17 lhood:-75464.42  kl_z:7930.01   kl_w: 9584.83
+Iter:18 lhood:-78961.78  kl_z:3961.41   kl_w: 9584.90
+Iter:19 lhood:-71806.06  kl_z:5435.90   kl_w: 9584.98
+ Epoch:   9/ 30 tr_elbo:95227.97  test_mse:0.019
+
+ Iter:0  lhood:-75241.73  kl_z:1666.20   kl_w: 9585.06
+Iter:1  lhood:-73935.53  kl_z:1635.37   kl_w: 9585.14
+Iter:2  lhood:-74949.88  kl_z:4422.81   kl_w: 9585.21
+Iter:3  lhood:-73531.59  kl_z:4939.58   kl_w: 9585.29
+Iter:4  lhood:-75349.45  kl_z:1811.63   kl_w: 9585.38
+Iter:5  lhood:-74583.90  kl_z:6397.51   kl_w: 9585.45
+Iter:6  lhood:-74160.74  kl_z:4177.84   kl_w: 9585.53
+Iter:7  lhood:-73775.09  kl_z:4209.27   kl_w: 9585.60
+Iter:8  lhood:-72730.14  kl_z:4696.44   kl_w: 9585.68
+Iter:9  lhood:-75691.42  kl_z:2267.24   kl_w: 9585.76
+Iter:10 lhood:-72517.70  kl_z:1417.06   kl_w: 9585.83
+Iter:11 lhood:-73118.48  kl_z:6703.14   kl_w: 9585.90
+Iter:12 lhood:-73535.22  kl_z:3985.63   kl_w: 9585.99
+Iter:13 lhood:-74908.66  kl_z:2817.20   kl_w: 9586.09
+Iter:14 lhood:-75356.95  kl_z:3061.00   kl_w: 9586.19
+Iter:15 lhood:-73302.68  kl_z:5100.25   kl_w: 9586.30
+Iter:16 lhood:-73566.70  kl_z:2732.99   kl_w: 9586.42
+Iter:17 lhood:-73888.37  kl_z:1839.45   kl_w: 9586.53
+Iter:18 lhood:-72621.26  kl_z:3086.09   kl_w: 9586.64
+Iter:19 lhood:-75875.85  kl_z:8496.35   kl_w: 9586.73
+ Epoch:  10/ 30 tr_elbo:115382.02  test_mse:0.019
+
+ Iter:0  lhood:-74335.19  kl_z:5511.30   kl_w: 9586.84
+Iter:1  lhood:-73373.35  kl_z:6042.86   kl_w: 9586.95
+Iter:2  lhood:-72194.13  kl_z:3867.64   kl_w: 9587.07
+Iter:3  lhood:-75323.59  kl_z:5953.20   kl_w: 9587.17
+Iter:4  lhood:-72142.88  kl_z:9868.48   kl_w: 9587.27
+Iter:5  lhood:-76615.83  kl_z:8658.45   kl_w: 9587.36
+Iter:6  lhood:-74486.42  kl_z:4014.73   kl_w: 9587.44
+Iter:7  lhood:-74852.88  kl_z:3489.76   kl_w: 9587.51
+Iter:8  lhood:-75251.00  kl_z:3394.30   kl_w: 9587.59
+Iter:9  lhood:-75288.06  kl_z:6490.63   kl_w: 9587.66
+Iter:10 lhood:-71815.94  kl_z:4623.01   kl_w: 9587.73
+Iter:11 lhood:-74104.41  kl_z:4494.53   kl_w: 9587.79
+Iter:12 lhood:-73226.24  kl_z:2973.19   kl_w: 9587.86
+Iter:13 lhood:-76353.38  kl_z:732.21    kl_w: 9587.93
+Iter:14 lhood:-72856.65  kl_z:7461.15   kl_w: 9587.99
+Iter:15 lhood:-73151.32  kl_z:3483.24   kl_w: 9588.05
+Iter:16 lhood:-75094.20  kl_z:3753.95   kl_w: 9588.11
+Iter:17 lhood:-75172.94  kl_z:2715.89   kl_w: 9588.17
+Iter:18 lhood:-72868.91  kl_z:8225.97   kl_w: 9588.22
+Iter:19 lhood:-72886.62  kl_z:3222.86   kl_w: 9588.31
+ Epoch:  11/ 30 tr_elbo:86456.35  test_mse:0.019
+
+ Iter:0  lhood:-75570.72  kl_z:3562.77   kl_w: 9588.38
+Iter:1  lhood:-75538.55  kl_z:6506.80   kl_w: 9588.46
+Iter:2  lhood:-72819.91  kl_z:1797.85   kl_w: 9588.53
+Iter:3  lhood:-73082.86  kl_z:3453.81   kl_w: 9588.60
+Iter:4  lhood:-73005.09  kl_z:2463.64   kl_w: 9588.66
+Iter:5  lhood:-74493.02  kl_z:171.14    kl_w: 9588.72
+Iter:6  lhood:-72480.41  kl_z:2563.42   kl_w: 9588.78
+Iter:7  lhood:-74890.88  kl_z:2417.75   kl_w: 9588.85
+Iter:8  lhood:-71216.01  kl_z:1430.51   kl_w: 9588.91
+Iter:9  lhood:-74288.33  kl_z:1981.29   kl_w: 9588.98
+Iter:10 lhood:-75219.62  kl_z:79.83     kl_w: 9589.05
+Iter:11 lhood:-71590.07  kl_z:2239.40   kl_w: 9589.12
+Iter:12 lhood:-74086.66  kl_z:2324.03   kl_w: 9589.20
+Iter:13 lhood:-73693.87  kl_z:13.35     kl_w: 9589.28
+Iter:14 lhood:-72652.26  kl_z:1765.89   kl_w: 9589.35
+Iter:15 lhood:-74717.68  kl_z:-1533.71  kl_w: 9589.43
+Iter:16 lhood:-72902.23  kl_z:-1723.19  kl_w: 9589.51
+Iter:17 lhood:-74586.02  kl_z:859.28    kl_w: 9589.59
+Iter:18 lhood:-71894.40  kl_z:2459.22   kl_w: 9589.66
+Iter:19 lhood:-76979.30  kl_z:-187.02   kl_w: 9589.74
+ Epoch:  12/ 30 tr_elbo:85314.07  test_mse:0.019
+
+ Iter:0  lhood:-73629.67  kl_z:-280.93   kl_w: 9589.81
+Iter:1  lhood:-72388.97  kl_z:-118.47   kl_w: 9589.88
+Iter:2  lhood:-74100.20  kl_z:9611.22   kl_w: 9589.95
+Iter:3  lhood:-73667.72  kl_z:-267.14   kl_w: 9590.02
+Iter:4  lhood:-73783.64  kl_z:3149.53   kl_w: 9590.09
+Iter:5  lhood:-72538.90  kl_z:-2.48     kl_w: 9590.14
+Iter:6  lhood:-73547.49  kl_z:1121.60   kl_w: 9590.21
+Iter:7  lhood:-73057.20  kl_z:1623.67   kl_w: 9590.27
+Iter:8  lhood:-73856.34  kl_z:1907.98   kl_w: 9590.35
+Iter:9  lhood:-73328.76  kl_z:2698.81   kl_w: 9590.44
+Iter:10 lhood:-74442.44  kl_z:-3029.58  kl_w: 9590.54
+Iter:11 lhood:-74265.40  kl_z:-1908.65  kl_w: 9590.65
+Iter:12 lhood:-72184.49  kl_z:-714.06   kl_w: 9590.74
+Iter:13 lhood:-73646.50  kl_z:576.54    kl_w: 9590.84
+Iter:14 lhood:-71218.84  kl_z:3415.06   kl_w: 9590.95
+Iter:15 lhood:-76916.19  kl_z:-2734.56  kl_w: 9591.05
+Iter:16 lhood:-73230.92  kl_z:-2969.08  kl_w: 9591.15
+Iter:17 lhood:-75156.67  kl_z:1046.74   kl_w: 9591.25
+Iter:18 lhood:-74117.65  kl_z:327.93    kl_w: 9591.34
+Iter:19 lhood:-72877.92  kl_z:500.82    kl_w: 9591.44
+ Epoch:  13/ 30 tr_elbo:90488.73  test_mse:0.020
+
+ Iter:0  lhood:-73639.77  kl_z:1719.71   kl_w: 9591.55
+Iter:1  lhood:-72715.42  kl_z:905.82    kl_w: 9591.65
+Iter:2  lhood:-73280.18  kl_z:1631.56   kl_w: 9591.75
+Iter:3  lhood:-74057.38  kl_z:483.88    kl_w: 9591.84
+Iter:4  lhood:-74867.37  kl_z:2103.46   kl_w: 9591.94
+Iter:5  lhood:-72822.12  kl_z:1588.88   kl_w: 9592.03
+Iter:6  lhood:-75784.25  kl_z:2697.35   kl_w: 9592.11
+Iter:7  lhood:-75155.25  kl_z:5.49      kl_w: 9592.19
+Iter:8  lhood:-73977.43  kl_z:-124.13   kl_w: 9592.28
+Iter:9  lhood:-71260.38  kl_z:541.64    kl_w: 9592.37
+Iter:10 lhood:-72557.12  kl_z:-205.63   kl_w: 9592.46
+Iter:11 lhood:-73648.35  kl_z:739.21    kl_w: 9592.55
+Iter:12 lhood:-74785.27  kl_z:1829.75   kl_w: 9592.64
+Iter:13 lhood:-73109.42  kl_z:1196.69   kl_w: 9592.72
+Iter:14 lhood:-71709.80  kl_z:175.53    kl_w: 9592.80
+Iter:15 lhood:-73782.18  kl_z:-501.12   kl_w: 9592.88
+Iter:16 lhood:-74046.84  kl_z:2780.60   kl_w: 9592.95
+Iter:17 lhood:-73087.64  kl_z:-1548.25  kl_w: 9593.03
+Iter:18 lhood:-74834.46  kl_z:-1999.12  kl_w: 9593.10
+Iter:19 lhood:-71946.02  kl_z:-17.09    kl_w: 9593.17
+ Epoch:  14/ 30 tr_elbo:81520.19  test_mse:0.020
+
+ Iter:0  lhood:-73794.42  kl_z:-1551.56  kl_w: 9593.25
+Iter:1  lhood:-73042.90  kl_z:-1099.26  kl_w: 9593.33
+Iter:2  lhood:-73410.34  kl_z:-175.69   kl_w: 9593.42
+Iter:3  lhood:-73963.56  kl_z:-711.92   kl_w: 9593.50
+Iter:4  lhood:-73426.37  kl_z:850.05    kl_w: 9593.58
+Iter:5  lhood:-74637.41  kl_z:-1972.77  kl_w: 9593.66
+Iter:6  lhood:-74743.13  kl_z:3040.37   kl_w: 9593.74
+Iter:7  lhood:-73839.86  kl_z:-758.51   kl_w: 9593.83
+Iter:8  lhood:-74671.36  kl_z:986.37    kl_w: 9593.94
+Iter:9  lhood:-73431.89  kl_z:-211.32   kl_w: 9594.04
+Iter:10 lhood:-72087.03  kl_z:1145.87   kl_w: 9594.14
+Iter:11 lhood:-71769.16  kl_z:-2143.15  kl_w: 9594.24
+Iter:12 lhood:-73642.56  kl_z:283.35    kl_w: 9594.33
+Iter:13 lhood:-71490.81  kl_z:-556.75   kl_w: 9594.42
+Iter:14 lhood:-73234.88  kl_z:180.86    kl_w: 9594.51
+Iter:15 lhood:-73977.66  kl_z:-798.87   kl_w: 9594.61
+Iter:16 lhood:-71432.54  kl_z:1758.69   kl_w: 9594.70
+Iter:17 lhood:-72351.19  kl_z:2391.14   kl_w: 9594.79
+Iter:18 lhood:-74572.05  kl_z:1483.83   kl_w: 9594.87
+Iter:19 lhood:-75528.48  kl_z:-623.79   kl_w: 9594.96
+ Epoch:  15/ 30 tr_elbo:82018.47  test_mse:0.020
+
+ Iter:0  lhood:-74642.68  kl_z:2943.57   kl_w: 9595.05
+Iter:1  lhood:-71750.80  kl_z:-726.80   kl_w: 9595.12
+Iter:2  lhood:-71963.93  kl_z:1427.42   kl_w: 9595.21
+Iter:3  lhood:-74272.12  kl_z:-25.15    kl_w: 9595.30
+Iter:4  lhood:-72789.06  kl_z:1458.95   kl_w: 9595.39
+Iter:5  lhood:-73251.01  kl_z:2534.18   kl_w: 9595.48
+Iter:6  lhood:-72797.77  kl_z:-1983.63  kl_w: 9595.57
+Iter:7  lhood:-72306.90  kl_z:-67.67    kl_w: 9595.66
+Iter:8  lhood:-72644.58  kl_z:-1174.55  kl_w: 9595.74
+Iter:9  lhood:-73162.73  kl_z:3341.68   kl_w: 9595.82
+Iter:10 lhood:-75614.03  kl_z:3429.48   kl_w: 9595.92
+Iter:11 lhood:-74098.71  kl_z:-356.90   kl_w: 9596.01
+Iter:12 lhood:-75718.84  kl_z:2030.01   kl_w: 9596.10
+Iter:13 lhood:-73919.73  kl_z:702.71    kl_w: 9596.19
+Iter:14 lhood:-75638.77  kl_z:6682.44   kl_w: 9596.28
+Iter:15 lhood:-71655.20  kl_z:501.91    kl_w: 9596.36
+Iter:16 lhood:-72810.07  kl_z:-25.07    kl_w: 9596.44
+Iter:17 lhood:-72050.27  kl_z:388.24    kl_w: 9596.53
+Iter:18 lhood:-73439.70  kl_z:-1071.05  kl_w: 9596.60
+Iter:19 lhood:-75301.30  kl_z:-861.60   kl_w: 9596.68
+ Epoch:  16/ 30 tr_elbo:80765.16  test_mse:0.020
+
+ Iter:0  lhood:-73179.70  kl_z:4130.34   kl_w: 9596.74
+Iter:1  lhood:-73182.98  kl_z:-81.56    kl_w: 9596.81
+Iter:2  lhood:-73557.62  kl_z:-1818.83  kl_w: 9596.88
+Iter:3  lhood:-75787.98  kl_z:-1902.73  kl_w: 9596.94
+Iter:4  lhood:-71212.09  kl_z:-3313.81  kl_w: 9597.03
+Iter:5  lhood:-75160.15  kl_z:-3546.61  kl_w: 9597.11
+Iter:6  lhood:-73267.20  kl_z:-1727.10  kl_w: 9597.19
+Iter:7  lhood:-72456.83  kl_z:-858.87   kl_w: 9597.27
+Iter:8  lhood:-71359.91  kl_z:-1500.95  kl_w: 9597.35
+Iter:9  lhood:-73524.62  kl_z:-659.86   kl_w: 9597.44
+Iter:10 lhood:-73361.47  kl_z:-1880.82  kl_w: 9597.52
+Iter:11 lhood:-73775.02  kl_z:-1556.00  kl_w: 9597.61
+Iter:12 lhood:-73580.09  kl_z:-3431.32  kl_w: 9597.69
+Iter:13 lhood:-74620.71  kl_z:2199.57   kl_w: 9597.77
+Iter:14 lhood:-75717.32  kl_z:-292.82   kl_w: 9597.85
+Iter:15 lhood:-71717.30  kl_z:-2118.94  kl_w: 9597.97
+Iter:16 lhood:-75822.41  kl_z:-1137.42  kl_w: 9598.07
+Iter:17 lhood:-71991.34  kl_z:2575.24   kl_w: 9598.17
+Iter:18 lhood:-72441.25  kl_z:519.29    kl_w: 9598.27
+Iter:19 lhood:-75388.97  kl_z:681.74    kl_w: 9598.35
+_helloEpoch:  17/ 30 tr_elbo:90846.42  test_mse:0.020
+
+ Iter:0  lhood:-71765.50  kl_z:518.09    kl_w: 9598.45
+Iter:1  lhood:-74212.61  kl_z:-678.29   kl_w: 9598.53
+Iter:2  lhood:-72983.20  kl_z:-1549.84  kl_w: 9598.61
+Iter:3  lhood:-70828.97  kl_z:-3562.66  kl_w: 9598.69
+Iter:4  lhood:-75181.90  kl_z:1171.08   kl_w: 9598.76
+Iter:5  lhood:-74071.34  kl_z:-1632.56  kl_w: 9598.83
+Iter:6  lhood:-74963.92  kl_z:4074.28   kl_w: 9598.91
+Iter:7  lhood:-73571.30  kl_z:1895.02   kl_w: 9598.99
+Iter:8  lhood:-73937.91  kl_z:-647.82   kl_w: 9599.10
+Iter:9  lhood:-71997.14  kl_z:-1631.98  kl_w: 9599.20
+Iter:10 lhood:-74149.76  kl_z:-1918.77  kl_w: 9599.29
+Iter:11 lhood:-73092.83  kl_z:-467.85   kl_w: 9599.39
+Iter:12 lhood:-73274.24  kl_z:359.45    kl_w: 9599.48
+Iter:13 lhood:-75051.02  kl_z:-1271.84  kl_w: 9599.58
+Iter:14 lhood:-73720.05  kl_z:-3094.64  kl_w: 9599.66
+Iter:15 lhood:-74688.53  kl_z:-3256.17  kl_w: 9599.75
+Iter:16 lhood:-73025.48  kl_z:-3702.48  kl_w: 9599.84
+Iter:17 lhood:-72373.13  kl_z:2305.55   kl_w: 9599.93
+Iter:18 lhood:-72514.44  kl_z:526.99    kl_w: 9600.03
+Iter:19 lhood:-72683.90  kl_z:-1993.09  kl_w: 9600.14
+ Epoch:  18/ 30 tr_elbo:77054.88  test_mse:0.020
+
+ Iter:0  lhood:-72598.81  kl_z:391.78    kl_w: 9600.24
+Iter:1  lhood:-73526.18  kl_z:-1784.23  kl_w: 9600.35
+Iter:2  lhood:-71838.39  kl_z:-2336.57  kl_w: 9600.46
+Iter:3  lhood:-73976.92  kl_z:-58.77    kl_w: 9600.57
+Iter:4  lhood:-72974.27  kl_z:1506.81   kl_w: 9600.67
+Iter:5  lhood:-73475.11  kl_z:522.84    kl_w: 9600.79
+Iter:6  lhood:-74111.73  kl_z:1537.40   kl_w: 9600.91
+Iter:7  lhood:-74160.11  kl_z:956.22    kl_w: 9601.01
+Iter:8  lhood:-71276.34  kl_z:1705.03   kl_w: 9601.11
+Iter:9  lhood:-73822.64  kl_z:-3656.48  kl_w: 9601.21
+Iter:10 lhood:-74998.88  kl_z:1007.89   kl_w: 9601.31
+Iter:11 lhood:-74630.66  kl_z:-521.85   kl_w: 9601.40
+Iter:12 lhood:-73240.38  kl_z:-1961.02  kl_w: 9601.49
+Iter:13 lhood:-74907.86  kl_z:3518.75   kl_w: 9601.58
+Iter:14 lhood:-71196.23  kl_z:-3005.01  kl_w: 9601.67
+Iter:15 lhood:-73615.85  kl_z:-1058.00  kl_w: 9601.76
+Iter:16 lhood:-73087.30  kl_z:374.37    kl_w: 9601.84
+Iter:17 lhood:-72727.72  kl_z:1631.33   kl_w: 9601.96
+Iter:18 lhood:-73201.85  kl_z:395.30    kl_w: 9602.06
+Iter:19 lhood:-74444.80  kl_z:-2175.61  kl_w: 9602.16
+ Epoch:  19/ 30 tr_elbo:84355.61  test_mse:0.020
+
+ Iter:0  lhood:-71850.09  kl_z:-2965.98  kl_w: 9602.26
+Iter:1  lhood:-75721.27  kl_z:487.71    kl_w: 9602.36
+Iter:2  lhood:-71894.84  kl_z:844.73    kl_w: 9602.46
+Iter:3  lhood:-71962.06  kl_z:-1291.25  kl_w: 9602.55
+Iter:4  lhood:-72555.62  kl_z:-2230.73  kl_w: 9602.63
+Iter:5  lhood:-74387.23  kl_z:-4205.32  kl_w: 9602.71
+Iter:6  lhood:-74756.81  kl_z:3544.79   kl_w: 9602.78
+Iter:7  lhood:-75300.15  kl_z:-2735.34  kl_w: 9602.86
+Iter:8  lhood:-74072.25  kl_z:-1609.83  kl_w: 9602.94
+Iter:9  lhood:-73094.56  kl_z:-2749.42  kl_w: 9603.03
+Iter:10 lhood:-72159.76  kl_z:-1033.59  kl_w: 9603.11
+Iter:11 lhood:-75413.38  kl_z:-2809.51  kl_w: 9603.19
+Iter:12 lhood:-73973.29  kl_z:-2796.90  kl_w: 9603.30
+Iter:13 lhood:-71985.92  kl_z:-2333.14  kl_w: 9603.41
+Iter:14 lhood:-72779.23  kl_z:-196.01   kl_w: 9603.51
+Iter:15 lhood:-72164.15  kl_z:-4592.15  kl_w: 9603.61
+Iter:16 lhood:-71642.92  kl_z:-2619.68  kl_w: 9603.72
+Iter:17 lhood:-72535.35  kl_z:-2330.69  kl_w: 9603.83
+Iter:18 lhood:-73013.44  kl_z:-892.29   kl_w: 9603.93
+Iter:19 lhood:-75377.73  kl_z:-1658.51  kl_w: 9604.05
+ Epoch:  20/ 30 tr_elbo:100093.30  test_mse:0.020
+
+ Iter:0  lhood:-72663.68  kl_z:-2061.42  kl_w: 9604.17
+Iter:1  lhood:-70056.84  kl_z:621.38    kl_w: 9604.28
+Iter:2  lhood:-70798.52  kl_z:-202.66   kl_w: 9604.40
+Iter:3  lhood:-71889.48  kl_z:-1602.88  kl_w: 9604.50
+Iter:4  lhood:-72121.57  kl_z:958.02    kl_w: 9604.60
+Iter:5  lhood:-70818.99  kl_z:1414.66   kl_w: 9604.70
+Iter:6  lhood:-72926.25  kl_z:-3054.44  kl_w: 9604.79
+Iter:7  lhood:-71192.44  kl_z:-2408.06  kl_w: 9604.88
+Iter:8  lhood:-75280.29  kl_z:-4112.77  kl_w: 9604.97
+Iter:9  lhood:-73634.59  kl_z:-3026.97  kl_w: 9605.06
+Iter:10 lhood:-76481.68  kl_z:921.71    kl_w: 9605.15
+Iter:11 lhood:-75875.32  kl_z:65.77     kl_w: 9605.24
+Iter:12 lhood:-72033.34  kl_z:-4585.51  kl_w: 9605.33
+Iter:13 lhood:-74236.54  kl_z:-3534.29  kl_w: 9605.42
+Iter:14 lhood:-73143.69  kl_z:-1326.93  kl_w: 9605.51
+Iter:15 lhood:-73710.27  kl_z:-6565.28  kl_w: 9605.59
+Iter:16 lhood:-73076.00  kl_z:-2453.81  kl_w: 9605.66
+Iter:17 lhood:-74792.19  kl_z:-1416.69  kl_w: 9605.74
+Iter:18 lhood:-74773.05  kl_z:-875.45   kl_w: 9605.84
+Iter:19 lhood:-72293.64  kl_z:-4644.94  kl_w: 9605.93
+ Epoch:  21/ 30 tr_elbo:68121.10  test_mse:0.019
+
+ Iter:0  lhood:-72846.10  kl_z:-1558.06  kl_w: 9606.02
+Iter:1  lhood:-75430.42  kl_z:-4850.37  kl_w: 9606.10
+Iter:2  lhood:-73869.60  kl_z:-6253.90  kl_w: 9606.17
+Iter:3  lhood:-70906.61  kl_z:-6957.70  kl_w: 9606.24
+Iter:4  lhood:-74749.76  kl_z:-4920.96  kl_w: 9606.31
+Iter:5  lhood:-70383.89  kl_z:-4238.88  kl_w: 9606.38
+Iter:6  lhood:-74973.55  kl_z:-1381.67  kl_w: 9606.45
+Iter:7  lhood:-75840.64  kl_z:28.44     kl_w: 9606.53
+Iter:8  lhood:-73341.18  kl_z:-4161.37  kl_w: 9606.59
+Iter:9  lhood:-72965.77  kl_z:-5018.26  kl_w: 9606.66
+Iter:10 lhood:-73355.72  kl_z:-3444.96  kl_w: 9606.76
+Iter:11 lhood:-71352.98  kl_z:-5113.80  kl_w: 9606.87
+Iter:12 lhood:-75615.40  kl_z:-604.46   kl_w: 9606.97
+Iter:13 lhood:-71202.44  kl_z:-4626.26  kl_w: 9607.08
+Iter:14 lhood:-70935.22  kl_z:-3425.06  kl_w: 9607.19
+Iter:15 lhood:-72421.11  kl_z:-5335.68  kl_w: 9607.30
+Iter:16 lhood:-73676.18  kl_z:-6019.59  kl_w: 9607.40
+Iter:17 lhood:-71509.91  kl_z:-2800.58  kl_w: 9607.50
+Iter:18 lhood:-74135.70  kl_z:-3042.75  kl_w: 9607.59
+Iter:19 lhood:-73523.24  kl_z:-3143.67  kl_w: 9607.67
+ Epoch:  22/ 30 tr_elbo:71165.03  test_mse:0.020
+
+ Iter:0  lhood:-72538.35  kl_z:-2517.20  kl_w: 9607.75
+Iter:1  lhood:-70962.66  kl_z:-3981.15  kl_w: 9607.83
+Iter:2  lhood:-74693.52  kl_z:-2915.91  kl_w: 9607.91
+Iter:3  lhood:-72302.27  kl_z:-963.90   kl_w: 9607.99
+Iter:4  lhood:-71375.24  kl_z:-2411.02  kl_w: 9608.07
+Iter:5  lhood:-74813.84  kl_z:-5052.17  kl_w: 9608.14
+Iter:6  lhood:-73884.97  kl_z:-3288.63  kl_w: 9608.21
+Iter:7  lhood:-73433.50  kl_z:-4103.02  kl_w: 9608.30
+Iter:8  lhood:-73548.51  kl_z:-7208.53  kl_w: 9608.37
+Iter:9  lhood:-73562.66  kl_z:-3868.73  kl_w: 9608.45
+Iter:10 lhood:-72909.02  kl_z:-3958.67  kl_w: 9608.51
+Iter:11 lhood:-74663.12  kl_z:-6020.67  kl_w: 9608.58
+Iter:12 lhood:-73064.34  kl_z:-5692.00  kl_w: 9608.66
+Iter:13 lhood:-73346.12  kl_z:-4115.78  kl_w: 9608.75
+Iter:14 lhood:-74679.95  kl_z:-3092.64  kl_w: 9608.83
+Iter:15 lhood:-71050.77  kl_z:-1533.07  kl_w: 9608.91
+Iter:16 lhood:-73463.94  kl_z:-5103.72  kl_w: 9608.99
+Iter:17 lhood:-73194.88  kl_z:-7661.09  kl_w: 9609.10
+Iter:18 lhood:-74094.59  kl_z:-3693.06  kl_w: 9609.21
+Iter:19 lhood:-75607.48  kl_z:-6981.48  kl_w: 9609.31
+ Epoch:  23/ 30 tr_elbo:64406.45  test_mse:0.020
+
+ Iter:0  lhood:-73053.92  kl_z:-3938.95  kl_w: 9609.41
+Iter:1  lhood:-73241.41  kl_z:-1771.05  kl_w: 9609.50
+Iter:2  lhood:-73059.30  kl_z:-6624.95  kl_w: 9609.60
+Iter:3  lhood:-74009.37  kl_z:-4887.18  kl_w: 9609.69
+Iter:4  lhood:-73674.91  kl_z:-3520.74  kl_w: 9609.80
+Iter:5  lhood:-71484.48  kl_z:-6084.91  kl_w: 9609.89
+Iter:6  lhood:-71622.20  kl_z:-4053.13  kl_w: 9610.00
+Iter:7  lhood:-74917.50  kl_z:-3682.52  kl_w: 9610.10
+Iter:8  lhood:-72001.69  kl_z:-1914.24  kl_w: 9610.22
+Iter:9  lhood:-75007.25  kl_z:-4466.41  kl_w: 9610.33
+Iter:10 lhood:-71763.77  kl_z:-1378.09  kl_w: 9610.44
+Iter:11 lhood:-70751.00  kl_z:-3478.16  kl_w: 9610.53
+Iter:12 lhood:-73289.36  kl_z:-2790.25  kl_w: 9610.62
+Iter:13 lhood:-72218.21  kl_z:-2976.68  kl_w: 9610.71
+Iter:14 lhood:-73258.10  kl_z:-3543.79  kl_w: 9610.80
+Iter:15 lhood:-72462.36  kl_z:-5652.77  kl_w: 9610.88
+Iter:16 lhood:-74175.72  kl_z:-2355.72  kl_w: 9610.96
+Iter:17 lhood:-77145.65  kl_z:-2535.68  kl_w: 9611.06
+Iter:18 lhood:-73471.58  kl_z:-5922.79  kl_w: 9611.14
+Iter:19 lhood:-70835.80  kl_z:-5862.33  kl_w: 9611.22
+ Epoch:  24/ 30 tr_elbo:66602.05  test_mse:0.020
+
+ Iter:0  lhood:-75055.69  kl_z:-6331.20  kl_w: 9611.30
+Iter:1  lhood:-72874.89  kl_z:-3926.56  kl_w: 9611.37
+Iter:2  lhood:-73859.36  kl_z:-4718.80  kl_w: 9611.46
+Iter:3  lhood:-72649.78  kl_z:-729.17   kl_w: 9611.54
+Iter:4  lhood:-72519.28  kl_z:-4231.69  kl_w: 9611.62
+Iter:5  lhood:-70989.23  kl_z:-6137.31  kl_w: 9611.70
+Iter:6  lhood:-73401.91  kl_z:-5649.24  kl_w: 9611.78
+Iter:7  lhood:-73484.12  kl_z:-3286.06  kl_w: 9611.85
+Iter:8  lhood:-73801.92  kl_z:-5665.63  kl_w: 9611.92
+Iter:9  lhood:-73862.82  kl_z:-6779.47  kl_w: 9612.00
+Iter:10 lhood:-74144.94  kl_z:-5751.78  kl_w: 9612.08
+Iter:11 lhood:-75174.84  kl_z:-3921.69  kl_w: 9612.17
+Iter:12 lhood:-72289.05  kl_z:-6126.02  kl_w: 9612.25
+Iter:13 lhood:-72688.77  kl_z:-4694.43  kl_w: 9612.34
+Iter:14 lhood:-72213.68  kl_z:-1228.74  kl_w: 9612.42
+Iter:15 lhood:-71643.08  kl_z:-5007.30  kl_w: 9612.50
+Iter:16 lhood:-73195.15  kl_z:-6012.08  kl_w: 9612.59
+Iter:17 lhood:-72189.94  kl_z:-7764.86  kl_w: 9612.67
+Iter:18 lhood:-72206.19  kl_z:-5370.78  kl_w: 9612.76
+Iter:19 lhood:-74073.34  kl_z:-4455.38  kl_w: 9612.85
+ Epoch:  25/ 30 tr_elbo:83633.18  test_mse:0.020
+
+ Iter:0  lhood:-72358.88  kl_z:-4949.28  kl_w: 9612.97
+Iter:1  lhood:-76650.34  kl_z:-4957.63  kl_w: 9613.09
+Iter:2  lhood:-71968.35  kl_z:-6812.43  kl_w: 9613.21
+Iter:3  lhood:-74727.59  kl_z:-143.14   kl_w: 9613.32
+Iter:4  lhood:-75039.73  kl_z:-5942.50  kl_w: 9613.42
+Iter:5  lhood:-72019.39  kl_z:-4254.69  kl_w: 9613.51
+Iter:6  lhood:-74382.92  kl_z:-4041.34  kl_w: 9613.59
+Iter:7  lhood:-71184.77  kl_z:-1374.60  kl_w: 9613.67
+Iter:8  lhood:-72889.52  kl_z:-3574.06  kl_w: 9613.74
+Iter:9  lhood:-70715.30  kl_z:-4136.38  kl_w: 9613.81
+Iter:10 lhood:-74003.33  kl_z:-7354.46  kl_w: 9613.87
+Iter:11 lhood:-74375.90  kl_z:-6530.26  kl_w: 9613.94
+Iter:12 lhood:-76395.27  kl_z:-6437.71  kl_w: 9614.01
+Iter:13 lhood:-71017.61  kl_z:-7637.93  kl_w: 9614.08
+Iter:14 lhood:-75617.69  kl_z:-6480.02  kl_w: 9614.17
+Iter:15 lhood:-72622.23  kl_z:-7823.08  kl_w: 9614.26
+Iter:16 lhood:-71792.43  kl_z:-1306.47  kl_w: 9614.36
+Iter:17 lhood:-72787.78  kl_z:-4370.19  kl_w: 9614.45
+Iter:18 lhood:-72140.14  kl_z:-5804.11  kl_w: 9614.55
+Iter:19 lhood:-69992.00  kl_z:-6178.89  kl_w: 9614.63
+ Epoch:  26/ 30 tr_elbo:65876.18  test_mse:0.020
+
+ Iter:0  lhood:-72426.90  kl_z:-4297.40  kl_w: 9614.71
+Iter:1  lhood:-73550.12  kl_z:-4992.93  kl_w: 9614.79
+Iter:2  lhood:-73668.51  kl_z:-4706.07  kl_w: 9614.87
+Iter:3  lhood:-72419.64  kl_z:-5218.35  kl_w: 9614.94
+Iter:4  lhood:-72702.88  kl_z:-4374.58  kl_w: 9615.00
+Iter:5  lhood:-73378.02  kl_z:-5859.36  kl_w: 9615.08
+Iter:6  lhood:-73120.33  kl_z:-3527.05  kl_w: 9615.15
+Iter:7  lhood:-73271.74  kl_z:-7787.04  kl_w: 9615.22
+Iter:8  lhood:-73679.02  kl_z:-9356.06  kl_w: 9615.28
+Iter:9  lhood:-70930.88  kl_z:-3165.36  kl_w: 9615.35
+Iter:10 lhood:-69995.47  kl_z:-5573.49  kl_w: 9615.42
+Iter:11 lhood:-75146.88  kl_z:-4739.27  kl_w: 9615.48
+Iter:12 lhood:-72620.95  kl_z:-4108.35  kl_w: 9615.55
+Iter:13 lhood:-72001.85  kl_z:1028.40   kl_w: 9615.61
+Iter:14 lhood:-73295.33  kl_z:-7203.62  kl_w: 9615.66
+Iter:15 lhood:-73366.00  kl_z:-6700.37  kl_w: 9615.73
+Iter:16 lhood:-73666.75  kl_z:-4699.06  kl_w: 9615.79
+Iter:17 lhood:-74145.27  kl_z:-1645.84  kl_w: 9615.85
+Iter:18 lhood:-75652.73  kl_z:-5912.25  kl_w: 9615.92
+Iter:19 lhood:-73951.76  kl_z:-8451.19  kl_w: 9616.00
+ Epoch:  27/ 30 tr_elbo:61417.58  test_mse:0.020
+
+ Iter:0  lhood:-73057.98  kl_z:-4143.99  kl_w: 9616.08
+Iter:1  lhood:-75021.65  kl_z:-5329.45  kl_w: 9616.16
+Iter:2  lhood:-72315.89  kl_z:-5757.28  kl_w: 9616.23
+Iter:3  lhood:-72604.33  kl_z:-5431.33  kl_w: 9616.31
+Iter:4  lhood:-72888.29  kl_z:-7540.72  kl_w: 9616.39
+Iter:5  lhood:-75257.59  kl_z:-9793.65  kl_w: 9616.48
+Iter:6  lhood:-72405.62  kl_z:-6927.86  kl_w: 9616.56
+Iter:7  lhood:-74151.98  kl_z:-6240.43  kl_w: 9616.63
+Iter:8  lhood:-74648.97  kl_z:-7062.59  kl_w: 9616.71
+Iter:9  lhood:-72427.59  kl_z:-8093.90  kl_w: 9616.78
+Iter:10 lhood:-72329.93  kl_z:-5520.11  kl_w: 9616.85
+Iter:11 lhood:-72735.30  kl_z:-7190.21  kl_w: 9616.91
+Iter:12 lhood:-72845.61  kl_z:-6484.89  kl_w: 9617.00
+Iter:13 lhood:-71047.90  kl_z:-7109.55  kl_w: 9617.08
+Iter:14 lhood:-71978.66  kl_z:-6422.16  kl_w: 9617.17
+Iter:15 lhood:-75242.97  kl_z:1247.78   kl_w: 9617.25
+Iter:16 lhood:-72013.03  kl_z:-7702.16  kl_w: 9617.32
+Iter:17 lhood:-76559.84  kl_z:-6065.11  kl_w: 9617.39
+Iter:18 lhood:-70430.19  kl_z:-6977.73  kl_w: 9617.47
+Iter:19 lhood:-71535.52  kl_z:-6156.96  kl_w: 9617.54
+ Epoch:  28/ 30 tr_elbo:62142.50  test_mse:0.020
+
+ Iter:0  lhood:-73014.29  kl_z:-8061.12  kl_w: 9617.61
+Iter:1  lhood:-74462.38  kl_z:-7758.30  kl_w: 9617.67
+Iter:2  lhood:-73352.65  kl_z:-7150.63  kl_w: 9617.78
+Iter:3  lhood:-73719.29  kl_z:-9444.68  kl_w: 9617.89
+Iter:4  lhood:-73003.82  kl_z:-6150.29  kl_w: 9618.01
+Iter:5  lhood:-71144.33  kl_z:-4035.32  kl_w: 9618.14
+Iter:6  lhood:-73156.23  kl_z:-8280.39  kl_w: 9618.26
+Iter:7  lhood:-70355.12  kl_z:-4698.56  kl_w: 9618.37
+Iter:8  lhood:-71214.06  kl_z:-6843.00  kl_w: 9618.47
+Iter:9  lhood:-73530.41  kl_z:-2421.74  kl_w: 9618.57
+Iter:10 lhood:-74213.13  kl_z:-3364.90  kl_w: 9618.67
+Iter:11 lhood:-73471.00  kl_z:-4071.58  kl_w: 9618.76
+Iter:12 lhood:-72051.09  kl_z:-5110.50  kl_w: 9618.85
+Iter:13 lhood:-72927.28  kl_z:-3068.16  kl_w: 9618.94
+Iter:14 lhood:-71708.08  kl_z:-2874.57  kl_w: 9619.03
+Iter:15 lhood:-72802.83  kl_z:-8348.76  kl_w: 9619.12
+Iter:16 lhood:-73843.21  kl_z:-1524.01  kl_w: 9619.22
+Iter:17 lhood:-73221.89  kl_z:-7650.54  kl_w: 9619.35
+Iter:18 lhood:-71793.93  kl_z:-5775.31  kl_w: 9619.47
+Iter:19 lhood:-73118.68  kl_z:-8484.75  kl_w: 9619.58
+ Epoch:  29/ 30 tr_elbo:66094.96  test_mse:0.019
+
+ Iter:0  lhood:-71788.19  kl_z:-2625.26  kl_w: 9619.69
+Iter:1  lhood:-72287.23  kl_z:-7314.48  kl_w: 9619.80
+Iter:2  lhood:-71194.94  kl_z:-7109.20  kl_w: 9619.90
+Iter:3  lhood:-71792.74  kl_z:-5284.89  kl_w: 9619.99
+Iter:4  lhood:-73372.23  kl_z:-5468.66  kl_w: 9620.08
+Iter:5  lhood:-71361.43  kl_z:-9918.65  kl_w: 9620.16
+Iter:6  lhood:-73378.05  kl_z:-8721.80  kl_w: 9620.25
+Iter:7  lhood:-73621.01  kl_z:-9255.07  kl_w: 9620.33
+Iter:8  lhood:-72461.23  kl_z:-7408.84  kl_w: 9620.42
+Iter:9  lhood:-74239.89  kl_z:-8855.15  kl_w: 9620.51
+Iter:10 lhood:-75930.23  kl_z:-11297.22  kl_w: 9620.61
+Iter:11 lhood:-70229.48  kl_z:-7033.44  kl_w: 9620.71
+Iter:12 lhood:-73701.16  kl_z:-8958.49  kl_w: 9620.79
+Iter:13 lhood:-73441.39  kl_z:-4580.95  kl_w: 9620.88
+Iter:14 lhood:-74434.16  kl_z:-7364.11  kl_w: 9620.95
+Iter:15 lhood:-71488.41  kl_z:-10273.78  kl_w: 9621.03
+Iter:16 lhood:-74149.96  kl_z:-7206.35  kl_w: 9621.09
+Iter:17 lhood:-74055.04  kl_z:-11029.66  kl_w: 9621.20
+Iter:18 lhood:-74405.13  kl_z:-7850.74  kl_w: 9621.30
+Iter:19 lhood:-73230.92  kl_z:-8497.76  kl_w: 9621.40
+ Epoch:  30/ 30 tr_elbo:61510.84  test_mse:0.019
