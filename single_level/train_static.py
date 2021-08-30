@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 25 16:34:32 2021
-
-@author: nguyn
-"""
+# TO BE UPDATED: Training the static version of networks
 
 import numpy as np
 import torch
@@ -14,7 +9,7 @@ from torch.nn import functional as F
 #from collections import namedtuple
 import time
 
-from net_model import Reward, AE, LatentRL
+from net_model_static import Reward, AE, LatentRL
 from utils import initialize, step, get_batch_sample, get_reward_sample, pertube
 
 

@@ -1,11 +1,9 @@
-import gym
 import numpy as np
 import torch
 
-from stable_baselines3 import DDPG, A2C, SAC, PPO
-from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+from stable_baselines3 import DDPG, SAC, PPO
+from stable_baselines3.common.noise import NormalActionNoise
 
-from net_model import AE
 
 from sb3_model import ShapePolicy, ShapePPOPolicy
 from isoperi import IsoperiEnv
@@ -14,14 +12,6 @@ from isoperi_test import IsoperiTestEnv
 
 # Fixed global vars
 device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
-#torch.device("cuda:0" if torch.cuda.is_available else "cpu")
-#ae_model_path = 'models/ae_model1'
-#reward_model_path = 'models/reward_model1'
-
-# Load model
-#ae_model_path = 'models/ae_mnist1'
-#ae_model = AE().to(device)
-#ae_model.load_state_dict(torch.load(ae_model_path))
 
 timestep = 200000; learning_rate = 3e-4; log_interval = 100
 training, training_ddpg, training_ppo = False, False, False
