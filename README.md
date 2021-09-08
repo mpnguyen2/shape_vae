@@ -6,5 +6,5 @@ The current data we're dealing with is 2D distributions: each datapoint is a 2D 
 
 There are currently three folders corresponding to different approaches we're working on:
 * direct: Discretize 2D distribution by bicubic spline and use a direct network for optimization tasks.
-* single_level: Use a latent representation to improve the training.
-* multi_level: Use both latent representation and a hierarchy with multi-level network to efficiently apply reinforcement learning to optimization tasks.
+* single_level: Image is dissected into a grid of subgrid. The improvement position is infered by a combined latent representations of all subgrids. O(sqrt(N))
+* multi_level: Use both latent representation and a hierarchy with multi-level network to efficiently apply reinforcement learning to optimization tasks. O(log N).

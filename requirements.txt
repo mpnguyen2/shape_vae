@@ -1,0 +1,5 @@
+-e .
+numpy
+scipy
+opencv-python
+stable-baselines3

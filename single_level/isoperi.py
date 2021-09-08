@@ -7,8 +7,9 @@ from gym.utils import seeding
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   
-from utils import initialize_direct, spline_interp, isoperi_reward
+from utils import initialize, spline_interp, isoperi_reward
 
+#import torch
 
 #device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
 
@@ -16,27 +17,25 @@ class IsoperiEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # xk, yk: knot coordinates; xg, yg: grid coordinates
-    def __init__(self, xk=None, yk=None, xg=None, yg=None):
+    def __init__(self, grid_dim, subgrid_dim, latent_dim, ae_model, X=np.array([]), resolution=50):
         super(IsoperiEnv, self).__init__()        
         self.num_step = 0
-        self.max_val = 10; self.min_val = -10
-        if xk is None:
-            xk, yk = np.mgrid[-1:1:4j, -1:1:4j]
-        if xg is None:
-            xg, yg = np.mgrid[-1:1:50j, -1:1:50j]
-            
-        self.num_coef = xk.shape[0]*yk.shape[0]
-        # action is now just the direction to move (discrete now)
+        self.max_val = 4; self.min_val = -4
+        self.X = X
+        self.z = decode(X)
+        self.area, self.peri = 0, 0
+        self.total_area, self.total_peri = 0, 0
+        # State is (x, z) where x is the current active subgrid, and z is combined latent rep of X
+        # z is used solely for inferring p
+        # Action is (v, p). Here p is where x lies in X, and v is the amount to change x
         self.action_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         self.observation_space = spaces.Box(low=self.min_val, high=self.max_val, shape=(self.num_coef, ), dtype=np.float32) 
         # state is the level-set function phi
         self.state = None
         self.num_step = 0
         # knot and fix grid
-        self.xk = xk
-        self.yk = yk
-        self.xg = xg
-        self.yg = yg
+        self.xk, self.yk = np.mgrid[-1:1:subgrid_dim+0j, -1:1:subgrid_dim+0j]
+        self.xg, self.yg = np.mgrid[-1:1:resolution+0j, -1:1:resolution+0j]
 
         # Other useful fields
         self.seed()
@@ -76,7 +75,7 @@ class IsoperiEnv(gym.Env):
         num_contour = 0
         while num_contour != 1:
             # Random z
-            z = initialize_direct()
+            z = initialize()
             img = spline_interp(self.xk, self.yk, z, self.xg, self.yg)
             contours, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             num_contour = len(contours)

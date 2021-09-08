@@ -1,10 +1,13 @@
 import numpy as np
 import cv2
 
-from utils import initialize, spline_interp, isoperi_reward
 import gym
 from gym import spaces
 from gym.utils import seeding
+
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   
+from utils import initialize_direct, spline_interp, isoperi_reward
 
 #import torch
 
@@ -100,7 +103,7 @@ class IsoperiTestEnv(gym.Env):
         reward = 1
         while num_contour != 1 or (reward == 0 or reward >= 0.14):
             # Random z
-            z = initialize()
+            z = initialize_direct()
             img = spline_interp(self.xk, self.yk, z, self.xg, self.yg)
             reward, contours = isoperi_reward(img, return_contour=True)
             num_contour = len(contours)
