@@ -68,7 +68,9 @@ def extract_geometry_from_array(z, xk=None, yk=None, xg=None, yg=None):
     return extract_geometry(spline_interp(xk, yk, z, xg, yg))
 
 # Initialization for big image
-def initialize_single(grid_dim=8, subgrid_dim=16, num_milestone=17, spacing=16, mode='random', xg=None, yg=None):
+def initialize_single(grid_dim=8, subgrid_dim=16, mode='random', 
+                      num_milestone=11, spacing=6, start_horizontal=10,
+                      xg=None, yg=None):
     '''
     Initialize a shape with a single hierarchy
     '''
@@ -84,22 +86,22 @@ def initialize_single(grid_dim=8, subgrid_dim=16, num_milestone=17, spacing=16, 
         Choose some random number of up milestones and down milestones and interpolate to get 
         the up and down heights of the shape along the horizontal
         """
-        half_dim = dimX/2
+        half_dim = dimX//2
         X = np.zeros((dimX, dimX))
         milestoneX_up = np.zeros(num_milestone)
         milestoneX_down = np.zeros(num_milestone)
         for i in range(num_milestone):
             milestoneX_up = np.random.randint(low=half_dim/4, high=3*half_dim/4, size=num_milestone)
             milestoneX_down = np.random.randint(low=half_dim/4, high=3*half_dim/4, size=num_milestone)
-        k = half_dim/2 + np.random.randint(low=-half_dim/4, high=half_dim/4)
+            
         for i in range(num_milestone-1):
             for j in range(spacing):
                 up = int(milestoneX_up[i]*(1.0-(j/spacing)) + milestoneX_up[i+1]*(j/spacing))
                 down = int(milestoneX_down[i]*(1.0-(j/spacing)) + milestoneX_down[i+1]*(j/spacing))
-                X[half_dim-down:half_dim+up, k+j] = np.ones(up+down)
-            k += spacing
+                X[half_dim-down:half_dim+up, start_horizontal+j] = 0.6 + 0.4*np.random.rand(up+down)
+            start_horizontal += spacing
+            # spacing is the spacing btw milestones, start_horizontal is horizontal start of consecutive stuffs btw 2 milestones
         X -= 0.5
-        
     # return area and perimeter information on each cell of the large grid. Each cell correspond to a subgrid
     area, peri = np.zeros((grid_dim, grid_dim)), np.zeros((grid_dim, grid_dim))
     for i in range(grid_dim):
@@ -127,13 +129,13 @@ def decode_pic(X, grid_dim, subgrid_dim, latent_dim, vae_model, device):
     return z                  
 
 # Training VAE initialization
-def get_sample(subgrid_dim, num_milestone, spacing):
+def get_sample(subgrid_dim=16, num_milestone=5, spacing=3):
     """
     Get meaningfully geometric samples for VAE pretraining
 
     """
-    x = 0.5*np.random.rand(subgrid_dim, subgrid_dim)
-    half_dim = subgrid_dim/2
+    x = np.zeros((subgrid_dim, subgrid_dim))
+    half_dim = subgrid_dim//2
     milestoneX_up = np.zeros(num_milestone)
     milestoneX_down = np.zeros(num_milestone)
     # random variable showing orientation
@@ -152,7 +154,7 @@ def get_sample(subgrid_dim, num_milestone, spacing):
             k += spacing
     # only top, bottom, right or left:
     else:     
-        milestone = np.random.randint(low=12, high=24, size=5)
+        milestone = np.random.randint(low=half_dim/2, high=subgrid_dim, size=num_milestone)
         len_one = np.zeros(subgrid_dim).astype(int)
         for i in range(num_milestone-1):
             for j in range(spacing):
@@ -174,17 +176,17 @@ def get_sample(subgrid_dim, num_milestone, spacing):
             for i in range(subgrid_dim):
                 x[subgrid_dim-len_one[i]:subgrid_dim, i] = 0.7+0.3*np.random.rand(len_one[i])
 
-    return torch.tensor(x, dtype=torch.float)
+    return x
 
-def get_batch_sample(batch_size, subgrid_dim, num_milestone, spacing):
+def get_samples(num_samples, subgrid_dim=16, num_milestone=5, spacing=3):
     """
     Get meaningfully geometric batches of samples for VAE pretraining
 
     """
-    x = torch.zeros(batch_size, 1, 32, 32, dtype=torch.float)
-    for i in range(batch_size):
+    x = np.zeros((num_samples, 1, subgrid_dim, subgrid_dim))
+    for i in range(num_samples):
         x[i,:,:,:] = get_sample(subgrid_dim, num_milestone, spacing)
-    return x
+    return torch.tensor(x, dtype=torch.float)
 
 # Update locally big image in single hierarchy setting
 def update_state(X, i, j, x, area, peri, total_area, total_peri,

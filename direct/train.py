@@ -11,13 +11,13 @@ from isoperi_test import IsoperiTestEnv
 # Fixed global vars
 device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
 
-# Default is SAC
-timestep = 200000; learning_rate = 3e-4; log_interval = 1
-training, training_ppo = False, True
-testing, testing_ppo = False, False
+# Default is SAC 
+timestep = 2000000; learning_rate = 3e-4; log_interval = 50
+training_sac, training_ppo = False, False
+testing_sac, testing_ppo = False, True
 
 ## TRAINING ##
-if training:
+if training_sac:
     # Create latent env
     env = IsoperiEnv()
     policy_kwargs = dict(activation_fn=torch.nn.Tanh,
@@ -36,7 +36,7 @@ if training_ppo:
     model.save("models/ppo_shape_opt")
 
 ## TESTING ##
-if testing:
+if testing_sac:
     # Create test env
     env = IsoperiTestEnv()
     

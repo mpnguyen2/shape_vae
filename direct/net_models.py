@@ -1,5 +1,5 @@
 import gym
-import torch as th
+import torch
 from torch import nn
 
 from typing import Callable, Dict, List, Optional, Tuple, Type, Union
@@ -8,22 +8,22 @@ from stable_baselines3.common.policies import ActorCriticPolicy
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   
-from common_nets import Mlp
+from common.common_nets import Mlp
 
 ## PPO CUSTOM NET from stable_baselines3 library ##
-class CustomPPO(nn.Module):
+class PolicyNet(nn.Module):
     """
-    Custom PPO network
+    Network that output from the common extractor for actor as well as critic networks for on-policy training
     """
 
     def __init__(
         self,
         feature_dim: int,
         last_layer_dim_pi: int = 128,
-        last_layer_dim_vf: int = 64,
+        last_layer_dim_vf: int = 16,
     ):
-        super(CustomPPO, self).__init__()
-
+        super(PolicyNet, self).__init__()
+        
         # IMPORTANT: Save output dimensions, used to create the distributions
         self.latent_dim_pi = last_layer_dim_pi
         self.latent_dim_vf = last_layer_dim_vf
@@ -34,15 +34,16 @@ class CustomPPO(nn.Module):
         
         # Value network
         self.value_net = Mlp(input_dim=feature_dim, output_dim=last_layer_dim_vf,
-            layer_dims=[32, 16, 64]) 
+            layer_dims=[64, 16, 8, 4]) 
 
-    def forward(self, features: th.Tensor) -> Tuple[th.Tensor, th.Tensor]:
+    def forward(self, features: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         :return: (th.Tensor, th.Tensor) latent_policy, latent_value of the specified network.
             If all layers are shared, then ``latent_policy == latent_value``
         """
         return self.policy_net(features), self.value_net(features)
 
+# Shape Policy for PPO training. No common feature extractor used (for actor and critic nets)
 class ShapePPOPolicy(ActorCriticPolicy):
     def __init__(
         self,
@@ -68,4 +69,4 @@ class ShapePPOPolicy(ActorCriticPolicy):
         self.ortho_init = False
 
     def _build_mlp_extractor(self) -> None:
-        self.mlp_extractor = CustomPPO(self.features_dim)
+        self.mlp_extractor = PolicyNet(self.features_dim)

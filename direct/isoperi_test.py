@@ -7,7 +7,7 @@ from gym.utils import seeding
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   
-from utils import initialize_direct, spline_interp, isoperi_reward
+from common.utils import initialize_direct, spline_interp, isoperi_reward
 
 #import torch
 
@@ -17,7 +17,7 @@ class IsoperiTestEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # xk, yk: knot coordinates; xg, yg: grid coordinates
-    def __init__(self, xk=None, yk=None, xg=None, yg=None, out_file='test_vid/test2.wmv'):
+    def __init__(self, xk=None, yk=None, xg=None, yg=None, out_file='videos/test.wmv'):
         super(IsoperiTestEnv, self).__init__()        
         self.num_step = 0
         self.max_val = 10; self.min_val = -10
@@ -58,7 +58,7 @@ class IsoperiTestEnv(gym.Env):
     def step(self, act):
         # Update state (linearly)
         self.num_step += 1
-        eps = 0.000002
+        eps = 0.00002
         self.state += eps*act    
         # Interpolate main values with bicubic spline
         img = spline_interp(self.xk, self.yk, self.state.reshape(self.xk.shape[0], self.yk.shape[0]), self.xg, self.yg)
@@ -78,16 +78,16 @@ class IsoperiTestEnv(gym.Env):
         self.reward = reward
         
         # Print info
-        if self.num_step % 200 == 1:
+        if self.num_step % 10 == 1:
             print('Reward: ', reward, '; Step: ', self.num_step)
         # Update frame for trajectory's video rendering
-        if self.num_step % 200 == 1:
+        if self.num_step % 10 == 1:
             cv2.drawContours(image=img, contours=contours, contourIdx=-1, color=(0,255,0), thickness=1)
             self.out.write(img)
             
         # Stop when num of step is more than 2000
         done = False
-        if self.num_step >= 40000:
+        if self.num_step >= 5000:
             done = True
             # Save video
             self.out.release()
@@ -101,7 +101,7 @@ class IsoperiTestEnv(gym.Env):
         self.num_step = 0
         num_contour = 0
         reward = 1
-        while num_contour != 1 or (reward == 0 or reward >= 0.14):
+        while num_contour != 2 or (reward == 0 or reward >= 0.17):
             # Random z
             z = initialize_direct()
             img = spline_interp(self.xk, self.yk, z, self.xg, self.yg)

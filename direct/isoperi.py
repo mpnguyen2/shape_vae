@@ -7,7 +7,7 @@ from gym.utils import seeding
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   
-from utils import initialize_direct, spline_interp, isoperi_reward
+from common.utils import initialize_direct, spline_interp, isoperi_reward
 
 
 #device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
