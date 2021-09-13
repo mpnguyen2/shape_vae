@@ -40,7 +40,7 @@ def extract_geometry(img, return_contour=False):
     area = 0; peri = 0
     for cnt in contours:
         area -= cv2.contourArea(cnt, oriented=True)
-        peri += cv2.arcLength(cnt, closed=True)
+        peri += cv2.arcLength(cnt, closed=False)
     if not return_contour:
         return area, peri
     else:
@@ -120,12 +120,12 @@ def decode_pic(X, grid_dim, subgrid_dim, latent_dim, vae_model, device):
     X is a grid with dimension grid_dim. Each cell in X grid is another subgrid with dim subgrid_dim
     For example if grid_dim = 8 and subgrid_dim = 16 then X actually has dimension 8*16 = 128
     """
-    z = torch.tensor(np.zeros((latent_dim, grid_dim, grid_dim)), dtype=torch.float)
+    z = np.zeros((latent_dim, grid_dim, grid_dim), dtype=float)
     for i in range(grid_dim):
         for j in range(grid_dim):
             mu, logvar = vae_model.encode(torch.tensor(X[i*subgrid_dim:(i+1)*subgrid_dim,\
-                        j*subgrid_dim:(j+1)*subgrid_dim], dtype=torch.float).unsqueeze(0).unsqueeze(0).to(device))         
-            z[:, i, j] = vae_model.reparameterize(mu, logvar).cpu().squeeze()
+                        j*subgrid_dim:(j+1)*subgrid_dim], dtype=torch.float).unsqueeze(0).to(device))
+            z[:, i, j] = vae_model.reparameterize(mu, logvar).cpu().detach().numpy().squeeze()
     return z                  
 
 # Training VAE initialization
@@ -183,10 +183,10 @@ def get_samples(num_samples, subgrid_dim=16, num_milestone=5, spacing=3):
     Get meaningfully geometric batches of samples for VAE pretraining
 
     """
-    x = np.zeros((num_samples, 1, subgrid_dim, subgrid_dim))
+    x = np.zeros((num_samples, subgrid_dim, subgrid_dim))
     for i in range(num_samples):
-        x[i,:,:,:] = get_sample(subgrid_dim, num_milestone, spacing)
-    return torch.tensor(x, dtype=torch.float)
+        x[i,:,:] = get_sample(subgrid_dim, num_milestone, spacing)
+    return torch.tensor(x, dtype=torch.float32)
 
 # Update locally big image in single hierarchy setting
 def update_state(X, i, j, x, area, peri, total_area, total_peri,
@@ -202,7 +202,11 @@ def update_state(X, i, j, x, area, peri, total_area, total_peri,
     X[i*x.shape[0]:(i+1)*x.shape[0]][j*x.shape[1]:(j+1)*x.shape[1]] = x
     
     return total_area, total_peri
-    
+
+# For lipschitz autoencoder
+def pertube(x):
+    pass
+
 # FOR LATER USE
 def subgrid_ind(p):
     """

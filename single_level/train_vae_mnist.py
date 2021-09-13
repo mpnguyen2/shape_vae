@@ -6,7 +6,7 @@ import torchvision
 import matplotlib.pyplot as plt
 import torch.optim as optim
 import torch.nn.functional as F
-from net_model import VAE
+from common.common_nets import VAE
 from vae_metrics import Metric
 
 # Set up logger

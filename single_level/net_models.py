@@ -21,15 +21,25 @@ device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
 # State {subgrid: 1 x 16 x 16; grid_compressed: 16 x 8 x 8}
 # Action {subgrid_change: 1 x 16 x 16; position probabilities p: 64}
 class Extractor(BaseFeaturesExtractor):
-    def __init__(self, observation_space: gym.spaces.Dict, features_dim=16*2*2+256):
+    def __init__(self, observation_space, 
+                 features_dim=16*2*2+256, 
+                 subgrid_dim=16, grid_dim=8,
+                 latent_dim=16):
         super(Extractor, self).__init__(observation_space, features_dim)
         self.subgrid_encoder = CNNEncoder(channels=[1, 4, 8, 16])
         self.grid_extractor = CNNEncoder(channels=[16, 32, 64])
         
-    def forward(self, observations):
-        change = self.subgrid_encoder(observations['subgrid'].unsqueeze(1))
-        p = self.grid_extractor_mlp(self.grid_extractor(observations['grid_compressed']))
+        self.subgrid_dim = subgrid_dim
+        self.grid_dim = grid_dim
+        self.latent_dim = latent_dim
+        self.change_dim = subgrid_dim**2
         
+    def forward(self, observations):
+        change = self.subgrid_encoder(observations[:, :self.change_dim].reshape(
+                -1, self.subgrid_dim, self.subgrid_dim).unsqueeze(1))
+        p = self.grid_extractor(observations[:, self.change_dim:].reshape(
+                -1, self.latent_dim, self.grid_dim, self.grid_dim))
+        #print("Extractor", change.shape, p.shape)
         return torch.cat((change, p), dim=1)
         
 # Redefine policy net
@@ -41,17 +51,23 @@ class ActorNet(nn.Module):
         feature_dim(int): dimension of the features extracted with the features_extractor
    
     """
-    def __init__(self, feature_dim):
+    def __init__(self, feature_dim, subgrid_dim):
         super(ActorNet, self).__init__()
         self.change_dim = 16*2*2
-        self.subgrid_decoder = CNNDecoder(channels=[16, 8, 4, 1], img_dim=16)
+        self.subgrid_dim = subgrid_dim
+        # Layers
+        self.subgrid_decoder = CNNDecoder(channels=[16, 8, 4, 1], img_dim=subgrid_dim)
         self.grid_position_mlp = Mlp(input_dim=feature_dim-self.change_dim, 
                                      output_dim=64, layer_dims=[128, 64, 32, 256])
         self.sigmoid_layer = nn.Sigmoid()
+        self.squash_layer = nn.Tanh()
         
     def forward(self, features):    
-        return dict({'change': self.subgrid_decoder(features[:self.change_dim]), 
-                     'position': self.sigmoid_layer(self.grid_position_mlp(features[self.change_dim:]))})
+        change = self.squash_layer(self.subgrid_decoder(
+            features[:, :self.change_dim]).reshape(-1, self.subgrid_dim**2))
+        position = self.sigmoid_layer(self.grid_position_mlp(features[:, self.change_dim:]))
+        #print("Actor:", change.shape, position.shape)
+        return torch.cat((change, position), dim=1)
 
 class PolicyNet(nn.Module):
     """
@@ -62,14 +78,20 @@ class PolicyNet(nn.Module):
    
     """
 
-    def __init__(self, feature_dim):
+    def __init__(self, feature_dim, 
+            last_layer_dim_pi=320,
+            last_layer_dim_vf=32,
+            subgrid_dim=16):
+        
         super(PolicyNet, self).__init__()
-
+        self.latent_dim_pi = last_layer_dim_pi
+        self.latent_dim_vf = last_layer_dim_vf
+        
         # Policy network
-        self.policy_net = ActorNet(feature_dim)
+        self.policy_net = ActorNet(feature_dim, subgrid_dim)
         
         # Value network
-        self.value_net = Mlp(input_dim=feature_dim, output_dim=8, layer_dims=[256, 64, 16, 32])
+        self.value_net = Mlp(input_dim=feature_dim, output_dim=last_layer_dim_vf, layer_dims=[256, 64, 16])
 
     def forward(self, features):
         """
@@ -86,9 +108,13 @@ class ShapePPOPolicy(ActorCriticPolicy):
         lr_schedule: Callable[[float], float],
         net_arch: Optional[List[Union[int, Dict[str, List[int]]]]] = None,
         activation_fn: Type[nn.Module] = nn.Tanh,
+        subgrid_dim=16,
         *args,
         **kwargs,
     ):
+        # Disable orthogonal initialization
+        self.ortho_init = False
+        self.subgrid_dim = subgrid_dim
 
         super(ShapePPOPolicy, self).__init__(
             observation_space,
@@ -100,11 +126,9 @@ class ShapePPOPolicy(ActorCriticPolicy):
             *args,
             **kwargs,
         )
-        # Disable orthogonal initialization
-        self.ortho_init = False
 
     def _build_mlp_extractor(self) -> None:
-        self.mlp_extractor = PolicyNet(self.features_dim)
+        self.mlp_extractor = PolicyNet(self.features_dim, subgrid_dim=self.subgrid_dim)
 
 
 ''' Others

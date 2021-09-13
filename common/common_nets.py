@@ -116,6 +116,7 @@ class VAE(nn.Module):
         self.mu_fc = Mlp(cnn_outdim, latent_dim, layer_dims=mlp_encode_dims, activation=activation_mlp)
         self.logvar_fc = Mlp(cnn_outdim, latent_dim, layer_dims=mlp_encode_dims, activation=activation_mlp)
         self.mlp_decoder = Mlp(latent_dim, cnn_outdim, layer_dims=mlp_decode_dims, activation=activation_mlp)  
+        self.last_layer = nn.Sigmoid()
         
         # Store set of x and z1 for traing 
         self.x_buf = []
@@ -137,7 +138,7 @@ class VAE(nn.Module):
         
     def decode(self, z):
         temp = self.mlp_decoder(z)
-        x  = self.decoder(temp)
+        x = self.last_layer(self.decoder(temp))
         return x.squeeze(1)
     
     def forward(self, x):

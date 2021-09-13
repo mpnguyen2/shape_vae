@@ -1,145 +1,20 @@
 """ 
-This file consists of description of all network as well as forward definition
+This file consists of description of all multi-hierarchy network
 """
 
 import torch
 from torch import nn
 from torch.nn import functional as F
+
 #from torchsummary import summary
 #from torch.utils.tensorboard import SummaryWriter
 
 #print(torch.__version__)
 
 class AC_Multilevel(nn.Module):
+    #TBA
     def __init__(self):
-        super(LatentRL, self).__init__()
-        self.saved_actions = []
-        self.rewards = []
-        # Reward returned by the artificial net
-        self.net_rewards = []  
-
-        # Initializes shared part of the network that processes the z-matrix of subgrids
-        # Input: 8 x 16 x 16, Output: 32 x 4 x 4 
-        self.subgrids_net = nn.Sequential(                               
-           nn.Conv2d(8, 16, kernel_size=3, stride=2, padding=1), # 16 x 8 x 8
-           nn.BatchNorm2d(16),
-           nn.ReLU(),
-           nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1), # 32 x 4 x 4
-           nn.BatchNorm2d(32),
-           nn.ReLU(),
-        )
-
-        # Actor network components
-        # Shared part of the actor network
-        # 
-        self.actor_shared = nn.Sequential(
-            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
-            nn.BatchNorm2d(64),
-            nn.ReLU(),              
-            nn.Flatten(), # 256
-            nn.Linear(256, 128), # 128
-            nn.ReLU()
-        )
-
-        # Predicts a categorical distribution over the p-matrix containing quadrant positions
-        # Input: 128, Output: 16
-        self.p_net = Mlp()
-
-        # Predicts the action vector 
-        # Input: 128 Output: 8
-        self.v_net = Mlp()
+        super(AC_Multilevel, self).__init__()
         
-        # Critic network which predicts value
-        # Input: 8 x 16 x 16, Output: 1 
-        self.critic = CNNDecoder()
-
-        # Reward network
-        # Process the processed z matrix for the reward network
-        self.reward_z_net = nn.Sequential (
-            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1), # 64 x 2 x 2
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.Flatten(), # 256
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 32),
-        )
-        
-        self.reward_action_net = nn.Sequential (
-            nn.Linear(24, 24),
-            nn.ReLU()
-        )
-        # Predicts reward
-        # Input: 32 + 24, Output: 1
-        self.reward_net_main = nn.Sequential(
-            nn.Linear(56, 32),
-            nn.ReLU(),
-            nn.Linear(32, 16),
-            nn.ReLU(),
-            nn.Linear(16, 4),
-            nn.Sigmoid(),
-            nn.Linear(4, 1),
-            nn.Sigmoid()
-        )
-
-    def reward(self, z_processed, action):
-        temp = self.reward_z_net(z_processed)
-        temp_act = self.reward_action_net(action)
-        #print(temp, temp_act)
-        return self.reward_net_main(torch.cat((temp, temp_act), 1))
-        
-    def forward(self, z):
-        # To be filled
-        """
-        Consist of 3 nets that take z as input Return the followings:
-        1. action (policy): which include a pairs of (p, v)
-        p indicate the position of the subgrid action act on
-        It is represented by a 4 by 4 matrix where each column 
-        represent categorial probability distribution on 4 items 
-        each item represent a quadrant
-        v with dim 8 indicates how much action is exerted on 
-        action is then a 4*4 + 4 = 20 dim vector
-        2. value function:       
-        3. reward function:
-        All these nets share parts of the net starting from z
-        so we group them here inside LatentRL
-        """            
-
-        # Shared network that processes z before sending it to other networks
-        z_processed = self.subgrids_net(z)
-
-        # Get the action (i.e. p and v)
-        temp = self.actor_shared(z_processed) 
-        tmp_p = self.p_net(temp)
-        p = F.softmax(tmp_p[:,:4], dim=1)
-        for i in range(1, 4):
-            p = torch.cat((p, F.softmax(tmp_p[:, 4*i:4*i+4], dim=1)),1)
-        v = self.v_net(temp)
-        action = torch.cat((p, v), 1)
-        # Predict the value
-        value = self.critic(z_processed)
-        # Predict the reward
-        #print(action.shape)
-        net_reward = self.reward(z_processed, action)
-        '''
-        # DEBUGGING
-        print("z_processed:", z_processed.shape)
-        print("p:", p.shape)
-        print("v:", v.shape)
-        print("Action:", action.shape)
-        print("Value:", value.shape)
-        print("Reward:", net_reward.shape)
-        '''
-        return action, value, net_reward
-
-
-'''
-if __name__ == "__main__":
-    print("Testing model")
-    vae = VAE()
-    agent = LatentRL()
-    #summary(vae, (1, 32, 32))
-    #summary(agent, (8, 16, 16))
-'''
+    def forward(self, x):
+        return x
